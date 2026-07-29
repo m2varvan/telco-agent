@@ -1,0 +1,641 @@
+                                              NAT Search Results                                              
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ package         ┃ version ┃ component_type ┃ component_name        ┃ description                           ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ nvidia-nat-core │ 1.8.0   │ llm_provider   │ aws_bedrock           │ An AWS Bedrock llm provider to be     │
+│                 │         │                │                       │ used with an LLM client.              │
+│                 │         │                │                       │                                       │
+│                 │         │                │                       │   Args:                               │
+│                 │         │                │                       │     thinking (bool | None): Whether   │
+│                 │         │                │                       │ to enable thinking. Defaults to None  │
+│                 │         │                │                       │ when supported on the model. Defaults │
+│                 │         │                │                       │ to None.                              │
+│                 │         │                │                       │     optimizable_params (list): List   │
+│                 │         │                │                       │ of parameters that can be optimized.  │
+│                 │         │                │                       │     search_space (dict): Optional     │
+│                 │         │                │                       │ search space overrides for            │
+│                 │         │                │                       │ optimizable parameters.               │
+│                 │         │                │                       │     do_auto_retry (bool): Whether to  │
+│                 │         │                │                       │ automatically retry method calls that │
+│                 │         │                │                       │ fail with a retryable error. Defaults │
+│                 │         │                │                       │ to True.                              │
+│                 │         │                │                       │     num_retries (int): Number of      │
+│                 │         │                │                       │ times to retry a method call that     │
+│                 │         │                │                       │ fails with a retryable error.         │
+│                 │         │                │                       │ Defaults to 5.                        │
+│                 │         │                │                       │     retry_on_status_codes (list):     │
+│                 │         │                │                       │ List of HTTP status codes that should │
+│                 │         │                │                       │ trigger a retry.                      │
+│                 │         │                │                       │     retry_on_errors (list[str] |      │
+│                 │         │                │                       │ None): List of error substrings that  │
+│                 │         │                │                       │ should trigger a retry.               │
+│                 │         │                │                       │     _type (str): The type of the      │
+│                 │         │                │                       │ object.                               │
+│                 │         │                │                       │     api_type (APITypeEnum): The type  │
+│                 │         │                │                       │ of API to use for the LLM provider.   │
+│                 │         │                │                       │ Defaults to "chat_completion".        │
+│                 │         │                │                       │     model_name (str): The model name  │
+│                 │         │                │                       │ for the hosted AWS Bedrock.           │
+│                 │         │                │                       │     max_tokens (int): Maximum number  │
+│                 │         │                │                       │ of tokens to generate. Defaults to    │
+│                 │         │                │                       │ 300.                                  │
+│                 │         │                │                       │     context_size (int | None): The    │
+│                 │         │                │                       │ maximum number of tokens available    │
+│                 │         │                │                       │ for input. This is only required for  │
+│                 │         │                │                       │ LlamaIndex. This field is ignored for │
+│                 │         │                │                       │ LangChain/LangGraph. Defaults to      │
+│                 │         │                │                       │ 1024.                                 │
+│                 │         │                │                       │     region_name (str | None): AWS     │
+│                 │         │                │                       │ region to use. Defaults to "None".    │
+│                 │         │                │                       │     base_url (str | None): Bedrock    │
+│                 │         │                │                       │ endpoint to use. Needed if you don't  │
+│                 │         │                │                       │ want to default to us-east-1          │
+│                 │         │                │                       │ endpoint. Defaults to None.           │
+│                 │         │                │                       │     credentials_profile_name (str |   │
+│                 │         │                │                       │ None): The name of the profile in the │
+│                 │         │                │                       │ ~/.aws/credentials or ~/.aws/config   │
+│                 │         │                │                       │ files. Defaults to None.              │
+│                 │         │                │                       │     temperature (float | None):       │
+│                 │         │                │                       │ Sampling temperature to control       │
+│                 │         │                │                       │ randomness in the output. Defaults to │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     top_p (float | None): Top-p for   │
+│                 │         │                │                       │ distribution sampling. Defaults to    │
+│                 │         │                │                       │ None.                                 │
+├─────────────────┼─────────┼────────────────┼───────────────────────┼───────────────────────────────────────┤
+│ nvidia-nat-core │ 1.8.0   │ llm_provider   │ azure_openai          │ An Azure OpenAI LLM provider to be    │
+│                 │         │                │                       │ used with an LLM client.              │
+│                 │         │                │                       │                                       │
+│                 │         │                │                       │   Args:                               │
+│                 │         │                │                       │     verify_ssl (bool): Whether to     │
+│                 │         │                │                       │ verify SSL certificates when making   │
+│                 │         │                │                       │ API calls to the LLM provider.        │
+│                 │         │                │                       │ Defaults to True. Defaults to True.   │
+│                 │         │                │                       │     thinking (bool | None): Whether   │
+│                 │         │                │                       │ to enable thinking. Defaults to None  │
+│                 │         │                │                       │ when supported on the model. Defaults │
+│                 │         │                │                       │ to None.                              │
+│                 │         │                │                       │     do_auto_retry (bool): Whether to  │
+│                 │         │                │                       │ automatically retry method calls that │
+│                 │         │                │                       │ fail with a retryable error. Defaults │
+│                 │         │                │                       │ to True.                              │
+│                 │         │                │                       │     num_retries (int): Number of      │
+│                 │         │                │                       │ times to retry a method call that     │
+│                 │         │                │                       │ fails with a retryable error.         │
+│                 │         │                │                       │ Defaults to 5.                        │
+│                 │         │                │                       │     retry_on_status_codes (list):     │
+│                 │         │                │                       │ List of HTTP status codes that should │
+│                 │         │                │                       │ trigger a retry.                      │
+│                 │         │                │                       │     retry_on_errors (list[str] |      │
+│                 │         │                │                       │ None): List of error substrings that  │
+│                 │         │                │                       │ should trigger a retry.               │
+│                 │         │                │                       │     _type (str): The type of the      │
+│                 │         │                │                       │ object.                               │
+│                 │         │                │                       │     api_type (APITypeEnum): The type  │
+│                 │         │                │                       │ of API to use for the LLM provider.   │
+│                 │         │                │                       │ Defaults to "chat_completion".        │
+│                 │         │                │                       │     api_key (pydantic.types.SecretStr │
+│                 │         │                │                       │ | None): Azure OpenAI API key to      │
+│                 │         │                │                       │ interact with hosted model. Defaults  │
+│                 │         │                │                       │ to None.                              │
+│                 │         │                │                       │     api_version (str): Azure OpenAI   │
+│                 │         │                │                       │ API version. Defaults to              │
+│                 │         │                │                       │ "2025-04-01-preview".                 │
+│                 │         │                │                       │     azure_endpoint (str | None): Base │
+│                 │         │                │                       │ URL for the hosted model. Defaults to │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     azure_deployment (str): The Azure │
+│                 │         │                │                       │ OpenAI hosted model/deployment name.  │
+│                 │         │                │                       │     seed (int | None): Random seed to │
+│                 │         │                │                       │ set for generation. Defaults to None. │
+│                 │         │                │                       │     temperature (float | None):       │
+│                 │         │                │                       │ Sampling temperature to control       │
+│                 │         │                │                       │ randomness in the output. Defaults to │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     top_p (float | None): Top-p for   │
+│                 │         │                │                       │ distribution sampling. Defaults to    │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     request_timeout (float | None):   │
+│                 │         │                │                       │ HTTP request timeout in seconds.      │
+│                 │         │                │                       │ Defaults to None.                     │
+├─────────────────┼─────────┼────────────────┼───────────────────────┼───────────────────────────────────────┤
+│ nvidia-nat-core │ 1.8.0   │ llm_provider   │ openai                │ An OpenAI LLM provider to be used     │
+│                 │         │                │                       │ with an LLM client.                   │
+│                 │         │                │                       │                                       │
+│                 │         │                │                       │   Args:                               │
+│                 │         │                │                       │     verify_ssl (bool): Whether to     │
+│                 │         │                │                       │ verify SSL certificates when making   │
+│                 │         │                │                       │ API calls to the LLM provider.        │
+│                 │         │                │                       │ Defaults to True. Defaults to True.   │
+│                 │         │                │                       │     thinking (bool | None): Whether   │
+│                 │         │                │                       │ to enable thinking. Defaults to None  │
+│                 │         │                │                       │ when supported on the model. Defaults │
+│                 │         │                │                       │ to None.                              │
+│                 │         │                │                       │     optimizable_params (list): List   │
+│                 │         │                │                       │ of parameters that can be optimized.  │
+│                 │         │                │                       │     search_space (dict): Optional     │
+│                 │         │                │                       │ search space overrides for            │
+│                 │         │                │                       │ optimizable parameters.               │
+│                 │         │                │                       │     do_auto_retry (bool): Whether to  │
+│                 │         │                │                       │ automatically retry method calls that │
+│                 │         │                │                       │ fail with a retryable error. Defaults │
+│                 │         │                │                       │ to True.                              │
+│                 │         │                │                       │     num_retries (int): Number of      │
+│                 │         │                │                       │ times to retry a method call that     │
+│                 │         │                │                       │ fails with a retryable error.         │
+│                 │         │                │                       │ Defaults to 5.                        │
+│                 │         │                │                       │     retry_on_status_codes (list):     │
+│                 │         │                │                       │ List of HTTP status codes that should │
+│                 │         │                │                       │ trigger a retry.                      │
+│                 │         │                │                       │     retry_on_errors (list[str] |      │
+│                 │         │                │                       │ None): List of error substrings that  │
+│                 │         │                │                       │ should trigger a retry.               │
+│                 │         │                │                       │     _type (str): The type of the      │
+│                 │         │                │                       │ object.                               │
+│                 │         │                │                       │     api_type (APITypeEnum): The type  │
+│                 │         │                │                       │ of API to use for the LLM provider.   │
+│                 │         │                │                       │ Defaults to "chat_completion".        │
+│                 │         │                │                       │     api_key (pydantic.types.SecretStr │
+│                 │         │                │                       │ | None): OpenAI API key to interact   │
+│                 │         │                │                       │ with hosted model. Defaults to None.  │
+│                 │         │                │                       │     base_url (str | None): Base url   │
+│                 │         │                │                       │ to the hosted model. Defaults to      │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     model_name (str): The OpenAI      │
+│                 │         │                │                       │ hosted model name.                    │
+│                 │         │                │                       │     seed (int | None): Random seed to │
+│                 │         │                │                       │ set for generation. Defaults to None. │
+│                 │         │                │                       │     max_retries (int): The max number │
+│                 │         │                │                       │ of retries for the request. Defaults  │
+│                 │         │                │                       │ to 10.                                │
+│                 │         │                │                       │     temperature (float | None):       │
+│                 │         │                │                       │ Sampling temperature to control       │
+│                 │         │                │                       │ randomness in the output. Defaults to │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     top_p (float | None): Top-p for   │
+│                 │         │                │                       │ distribution sampling. Defaults to    │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     request_timeout (float | None):   │
+│                 │         │                │                       │ HTTP request timeout in seconds.      │
+│                 │         │                │                       │ Defaults to None.                     │
+├─────────────────┼─────────┼────────────────┼───────────────────────┼───────────────────────────────────────┤
+│ nvidia-nat-core │ 1.8.0   │ llm_provider   │ dynamo                │ A Dynamo LLM provider with automatic  │
+│                 │         │                │                       │ nvext.agent_hints and                 │
+│                 │         │                │                       │ nvext.cache_control injection for KV  │
+│                 │         │                │                       │ cache optimization.                   │
+│                 │         │                │                       │                                       │
+│                 │         │                │                       │     This is a specialized             │
+│                 │         │                │                       │ OpenAI-compatible LLM that sends      │
+│                 │         │                │                       │ Dynamo routing hints                  │
+│                 │         │                │                       │     for optimal KV cache management   │
+│                 │         │                │                       │ and request routing. Hints are        │
+│                 │         │                │                       │ injected when                         │
+│                 │         │                │                       │     ``enable_nvext_hints`` is True.   │
+│                 │         │                │                       │ The hint parameters                   │
+│                 │         │                │                       │ (nvext_prefix_total_requests,         │
+│                 │         │                │                       │     nvext_prefix_osl,                 │
+│                 │         │                │                       │ nvext_prefix_iat) are optimizable via │
+│                 │         │                │                       │ the NAT optimizer.                    │
+│                 │         │                │                       │                                       │
+│                 │         │                │                       │     All hints are sent via            │
+│                 │         │                │                       │ ``nvext.agent_hints`` in the request  │
+│                 │         │                │                       │ body. Standard Dynamo                 │
+│                 │         │                │                       │     fields (``latency_sensitivity``,  │
+│                 │         │                │                       │ ``osl``, ``priority``) are consumed   │
+│                 │         │                │                       │ by Dynamo's                           │
+│                 │         │                │                       │     built-in router and engine        │
+│                 │         │                │                       │ scheduler. Custom fields              │
+│                 │         │                │                       │ (``prefix_id``,                       │
+│                 │         │                │                       │     ``total_requests``, ``iat``) are  │
+│                 │         │                │                       │ consumed by the custom                │
+│                 │         │                │                       │ ``processor.py``.                     │
+│                 │         │                │                       │                                       │
+│                 │         │                │                       │     To disable hints, set             │
+│                 │         │                │                       │ ``enable_nvext_hints: false`` in your │
+│                 │         │                │                       │ config (the default).                 │
+│                 │         │                │                       │                                       │
+│                 │         │                │                       │   Args:                               │
+│                 │         │                │                       │     verify_ssl (bool): Whether to     │
+│                 │         │                │                       │ verify SSL certificates when making   │
+│                 │         │                │                       │ API calls to the LLM provider.        │
+│                 │         │                │                       │ Defaults to True. Defaults to True.   │
+│                 │         │                │                       │     thinking (bool | None): Whether   │
+│                 │         │                │                       │ to enable thinking. Defaults to None  │
+│                 │         │                │                       │ when supported on the model. Defaults │
+│                 │         │                │                       │ to None.                              │
+│                 │         │                │                       │     optimizable_params (list): List   │
+│                 │         │                │                       │ of parameters that can be optimized.  │
+│                 │         │                │                       │     search_space (dict): Optional     │
+│                 │         │                │                       │ search space overrides for            │
+│                 │         │                │                       │ optimizable parameters.               │
+│                 │         │                │                       │     do_auto_retry (bool): Whether to  │
+│                 │         │                │                       │ automatically retry method calls that │
+│                 │         │                │                       │ fail with a retryable error. Defaults │
+│                 │         │                │                       │ to True.                              │
+│                 │         │                │                       │     num_retries (int): Number of      │
+│                 │         │                │                       │ times to retry a method call that     │
+│                 │         │                │                       │ fails with a retryable error.         │
+│                 │         │                │                       │ Defaults to 5.                        │
+│                 │         │                │                       │     retry_on_status_codes (list):     │
+│                 │         │                │                       │ List of HTTP status codes that should │
+│                 │         │                │                       │ trigger a retry.                      │
+│                 │         │                │                       │     retry_on_errors (list[str] |      │
+│                 │         │                │                       │ None): List of error substrings that  │
+│                 │         │                │                       │ should trigger a retry.               │
+│                 │         │                │                       │     _type (str): The type of the      │
+│                 │         │                │                       │ object.                               │
+│                 │         │                │                       │     api_type (APITypeEnum): The type  │
+│                 │         │                │                       │ of API to use for the LLM provider.   │
+│                 │         │                │                       │ Defaults to "chat_completion".        │
+│                 │         │                │                       │     api_key (pydantic.types.SecretStr │
+│                 │         │                │                       │ | None): OpenAI API key to interact   │
+│                 │         │                │                       │ with hosted model. Defaults to None.  │
+│                 │         │                │                       │     base_url (str | None): Base url   │
+│                 │         │                │                       │ to the hosted model. Defaults to      │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     model_name (str): The OpenAI      │
+│                 │         │                │                       │ hosted model name.                    │
+│                 │         │                │                       │     seed (int | None): Random seed to │
+│                 │         │                │                       │ set for generation. Defaults to None. │
+│                 │         │                │                       │     max_retries (int): The max number │
+│                 │         │                │                       │ of retries for the request. Defaults  │
+│                 │         │                │                       │ to 10.                                │
+│                 │         │                │                       │     temperature (float | None):       │
+│                 │         │                │                       │ Sampling temperature to control       │
+│                 │         │                │                       │ randomness in the output. Defaults to │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     top_p (float | None): Top-p for   │
+│                 │         │                │                       │ distribution sampling. Defaults to    │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     request_timeout (float): HTTP     │
+│                 │         │                │                       │ request timeout in seconds for LLM    │
+│                 │         │                │                       │ requests. Defaults to 600.0.          │
+│                 │         │                │                       │     enable_nvext_hints (bool): When   │
+│                 │         │                │                       │ True, inject nvext.agent_hints and    │
+│                 │         │                │                       │ nvext.cache_control into requests via │
+│                 │         │                │                       │ a custom httpx transport. When False  │
+│                 │         │                │                       │ (default), no routing hints are       │
+│                 │         │                │                       │ injected. Defaults to False.          │
+│                 │         │                │                       │     nvext_prefix_id_template (str |   │
+│                 │         │                │                       │ None): Template for prefix ID. The    │
+│                 │         │                │                       │ {uuid} placeholder will be replaced   │
+│                 │         │                │                       │ with a unique ID. Currently unused by │
+│                 │         │                │                       │ the transport (prefix IDs come from   │
+│                 │         │                │                       │ DynamoPrefixContext), but retained    │
+│                 │         │                │                       │ for configuration reference. Defaults │
+│                 │         │                │                       │ to "nat-dynamo-{uuid}".               │
+│                 │         │                │                       │     nvext_prefix_total_requests       │
+│                 │         │                │                       │ (int): Expected number of requests    │
+│                 │         │                │                       │ for this conversation/prefix. Higher  │
+│                 │         │                │                       │ values increase worker stickiness and │
+│                 │         │                │                       │ KV cache locality. Lower values allow │
+│                 │         │                │                       │ more load balancing across workers.   │
+│                 │         │                │                       │ Defaults to 10.                       │
+│                 │         │                │                       │     nvext_prefix_osl (int): Expected  │
+│                 │         │                │                       │ output tokens for response length     │
+│                 │         │                │                       │ hinting (Output Sequence Length). Raw │
+│                 │         │                │                       │ integer value is sent in              │
+│                 │         │                │                       │ nvext.agent_hints. Accepts            │
+│                 │         │                │                       │ categorical strings (LOW/MEDIUM/HIGH) │
+│                 │         │                │                       │ for backward compatibility (mapped to │
+│                 │         │                │                       │ 128/512/2048). Defaults to 512.       │
+│                 │         │                │                       │     nvext_prefix_iat (int): Expected  │
+│                 │         │                │                       │ inter-arrival time in milliseconds    │
+│                 │         │                │                       │ for request pacing. Raw integer value │
+│                 │         │                │                       │ is sent in nvext.agent_hints. Accepts │
+│                 │         │                │                       │ categorical strings (LOW/MEDIUM/HIGH) │
+│                 │         │                │                       │ for backward compatibility (mapped to │
+│                 │         │                │                       │ 50/250/750). Defaults to 250.         │
+│                 │         │                │                       │     nvext_prediction_trie_path (str | │
+│                 │         │                │                       │ None): Path to prediction_trie.json   │
+│                 │         │                │                       │ file. When set, predictions are       │
+│                 │         │                │                       │ looked up and used to override        │
+│                 │         │                │                       │ nvext.agent_hints for each LLM call.  │
+│                 │         │                │                       │ Defaults to None.                     │
+│                 │         │                │                       │     nvext_cache_pin_type              │
+│                 │         │                │                       │ (nat.llm.dynamo_llm.CachePinType |    │
+│                 │         │                │                       │ None): Cache pinning strategy for KV  │
+│                 │         │                │                       │ cache entries. When set, injects      │
+│                 │         │                │                       │ nvext.cache_control with the pin type │
+│                 │         │                │                       │ and a TTL computed as total_requests  │
+│                 │         │                │                       │ * iat (estimated conversation         │
+│                 │         │                │                       │ duration in ms). Set to null/None to  │
+│                 │         │                │                       │ disable cache control hints. Defaults │
+│                 │         │                │                       │ to "ephemeral".                       │
+│                 │         │                │                       │     nvext_cache_control_mode          │
+│                 │         │                │                       │ (CacheControlMode): Controls when     │
+│                 │         │                │                       │ nvext.cache_control is injected.      │
+│                 │         │                │                       │ 'always' injects on every request     │
+│                 │         │                │                       │ (refreshes TTL each turn).            │
+│                 │         │                │                       │ 'first_only' injects only on the      │
+│                 │         │                │                       │ first request per prefix_id, pinning  │
+│                 │         │                │                       │ the system prompt when it is first    │
+│                 │         │                │                       │ established in the KV cache. Defaults │
+│                 │         │                │                       │ to "always".                          │
+│                 │         │                │                       │     nvext_max_sensitivity (int):      │
+│                 │         │                │                       │ Upper bound for latency_sensitivity,  │
+│                 │         │                │                       │ used to validate the sensitivity      │
+│                 │         │                │                       │ range. Dynamo treats higher priority  │
+│                 │         │                │                       │ values as higher priority, so the     │
+│                 │         │                │                       │ injected priority equals              │
+│                 │         │                │                       │ latency_sensitivity directly (more    │
+│                 │         │                │                       │ sensitive = higher priority).         │
+│                 │         │                │                       │ Defaults to 1000.                     │
+├─────────────────┼─────────┼────────────────┼───────────────────────┼───────────────────────────────────────┤
+│ nvidia-nat-core │ 1.8.0   │ llm_provider   │ huggingface_inference │ HuggingFace Inference API LLM         │
+│                 │         │                │                       │ provider for remote model inference.  │
+│                 │         │                │                       │                                       │
+│                 │         │                │                       │     Supports:                         │
+│                 │         │                │                       │     - Serverless Inference API        │
+│                 │         │                │                       │ (default)                             │
+│                 │         │                │                       │     - Dedicated Inference Endpoints   │
+│                 │         │                │                       │ (via endpoint_url)                    │
+│                 │         │                │                       │     - Self-hosted TGI servers (via    │
+│                 │         │                │                       │ endpoint_url).                        │
+│                 │         │                │                       │                                       │
+│                 │         │                │                       │   Args:                               │
+│                 │         │                │                       │     thinking (bool | None): Whether   │
+│                 │         │                │                       │ to enable thinking. Defaults to None  │
+│                 │         │                │                       │ when supported on the model. Defaults │
+│                 │         │                │                       │ to None.                              │
+│                 │         │                │                       │     optimizable_params (list): List   │
+│                 │         │                │                       │ of parameters that can be optimized.  │
+│                 │         │                │                       │     search_space (dict): Optional     │
+│                 │         │                │                       │ search space overrides for            │
+│                 │         │                │                       │ optimizable parameters.               │
+│                 │         │                │                       │     do_auto_retry (bool): Whether to  │
+│                 │         │                │                       │ automatically retry method calls that │
+│                 │         │                │                       │ fail with a retryable error. Defaults │
+│                 │         │                │                       │ to True.                              │
+│                 │         │                │                       │     num_retries (int): Number of      │
+│                 │         │                │                       │ times to retry a method call that     │
+│                 │         │                │                       │ fails with a retryable error.         │
+│                 │         │                │                       │ Defaults to 5.                        │
+│                 │         │                │                       │     retry_on_status_codes (list):     │
+│                 │         │                │                       │ List of HTTP status codes that should │
+│                 │         │                │                       │ trigger a retry.                      │
+│                 │         │                │                       │     retry_on_errors (list[str] |      │
+│                 │         │                │                       │ None): List of error substrings that  │
+│                 │         │                │                       │ should trigger a retry.               │
+│                 │         │                │                       │     _type (str): The type of the      │
+│                 │         │                │                       │ object.                               │
+│                 │         │                │                       │     api_type (APITypeEnum): The type  │
+│                 │         │                │                       │ of API to use for the LLM provider.   │
+│                 │         │                │                       │ Defaults to "chat_completion".        │
+│                 │         │                │                       │     model_name (str): HuggingFace     │
+│                 │         │                │                       │ model identifier (e.g.,               │
+│                 │         │                │                       │ 'meta-llama/Llama-3.2-8B-Instruct').  │
+│                 │         │                │                       │     api_key (pydantic.types.SecretStr │
+│                 │         │                │                       │ | None): HuggingFace API token for    │
+│                 │         │                │                       │ authentication. Required for          │
+│                 │         │                │                       │ Serverless API and private Inference  │
+│                 │         │                │                       │ Endpoints. Defaults to None.          │
+│                 │         │                │                       │     endpoint_url (str | None): Custom │
+│                 │         │                │                       │ endpoint URL for Inference Endpoints  │
+│                 │         │                │                       │ or self-hosted TGI servers. If not    │
+│                 │         │                │                       │ provided, uses Serverless API.        │
+│                 │         │                │                       │ Defaults to None.                     │
+│                 │         │                │                       │     max_new_tokens (int | None):      │
+│                 │         │                │                       │ Maximum number of new tokens to       │
+│                 │         │                │                       │ generate. Defaults to 512.            │
+│                 │         │                │                       │     temperature (float | None):       │
+│                 │         │                │                       │ Sampling temperature to control       │
+│                 │         │                │                       │ randomness in the output. Defaults to │
+│                 │         │                │                       │ 0.7.                                  │
+│                 │         │                │                       │     top_p (float | None): Top-p       │
+│                 │         │                │                       │ (nucleus) sampling parameter.         │
+│                 │         │                │                       │ Defaults to None.                     │
+│                 │         │                │                       │     top_k (int | None): Top-k         │
+│                 │         │                │                       │ sampling parameter. Defaults to None. │
+│                 │         │                │                       │     repetition_penalty (float |       │
+│                 │         │                │                       │ None): Penalty for repeating tokens.  │
+│                 │         │                │                       │ Defaults to None.                     │
+│                 │         │                │                       │     seed (int | None): Random seed    │
+│                 │         │                │                       │ for reproducible generation. Defaults │
+│                 │         │                │                       │ to None.                              │
+│                 │         │                │                       │     timeout (float): Request timeout  │
+│                 │         │                │                       │ in seconds. Defaults to 120.0.        │
+├─────────────────┼─────────┼────────────────┼───────────────────────┼───────────────────────────────────────┤
+│ nvidia-nat-core │ 1.8.0   │ llm_provider   │ huggingface           │ Configuration for HuggingFace LLM -   │
+│                 │         │                │                       │ loads model directly for local        │
+│                 │         │                │                       │ execution.                            │
+│                 │         │                │                       │                                       │
+│                 │         │                │                       │   Args:                               │
+│                 │         │                │                       │     _type (str): The type of the      │
+│                 │         │                │                       │ object.                               │
+│                 │         │                │                       │     api_type (APITypeEnum): The type  │
+│                 │         │                │                       │ of API to use for the LLM provider.   │
+│                 │         │                │                       │ Defaults to "chat_completion".        │
+│                 │         │                │                       │     model_name (str): HuggingFace     │
+│                 │         │                │                       │ model name (e.g.                      │
+│                 │         │                │                       │ 'Qwen/Qwen3Guard-Gen-0.6B').          │
+│                 │         │                │                       │     device (str): Device: 'cpu',      │
+│                 │         │                │                       │ 'cuda', 'cuda:0', or 'auto'. Defaults │
+│                 │         │                │                       │ to "auto".                            │
+│                 │         │                │                       │     dtype (str | None): Torch dtype:  │
+│                 │         │                │                       │ 'float16', 'bfloat16', 'float32', or  │
+│                 │         │                │                       │ 'auto'. Defaults to "auto".           │
+│                 │         │                │                       │     max_new_tokens (int): Maximum     │
+│                 │         │                │                       │ number of new tokens to generate.     │
+│                 │         │                │                       │ Defaults to 128.                      │
+│                 │         │                │                       │     temperature (float): Sampling     │
+│                 │         │                │                       │ temperature (0 = deterministic        │
+│                 │         │                │                       │ greedy, > 0 = sampling enabled).      │
+│                 │         │                │                       │ Defaults to 0.0.                      │
+│                 │         │                │                       │     trust_remote_code (bool): Trust   │
+│                 │         │                │                       │ remote code when loading model.       │
+│                 │         │                │                       │ Defaults to False.                    │
+├─────────────────┼─────────┼────────────────┼───────────────────────┼───────────────────────────────────────┤
+│ nvidia-nat-core │ 1.8.0   │ llm_provider   │ litellm               │ A LiteLlm provider to be used with an │
+│                 │         │                │                       │ LLM client.                           │
+│                 │         │                │                       │                                       │
+│                 │         │                │                       │   Args:                               │
+│                 │         │                │                       │     verify_ssl (bool): Whether to     │
+│                 │         │                │                       │ verify SSL certificates when making   │
+│                 │         │                │                       │ API calls to the LLM provider.        │
+│                 │         │                │                       │ Defaults to True. Defaults to True.   │
+│                 │         │                │                       │     thinking (bool | None): Whether   │
+│                 │         │                │                       │ to enable thinking. Defaults to None  │
+│                 │         │                │                       │ when supported on the model. Defaults │
+│                 │         │                │                       │ to None.                              │
+│                 │         │                │                       │     do_auto_retry (bool): Whether to  │
+│                 │         │                │                       │ automatically retry method calls that │
+│                 │         │                │                       │ fail with a retryable error. Defaults │
+│                 │         │                │                       │ to True.                              │
+│                 │         │                │                       │     num_retries (int): Number of      │
+│                 │         │                │                       │ times to retry a method call that     │
+│                 │         │                │                       │ fails with a retryable error.         │
+│                 │         │                │                       │ Defaults to 5.                        │
+│                 │         │                │                       │     retry_on_status_codes (list):     │
+│                 │         │                │                       │ List of HTTP status codes that should │
+│                 │         │                │                       │ trigger a retry.                      │
+│                 │         │                │                       │     retry_on_errors (list[str] |      │
+│                 │         │                │                       │ None): List of error substrings that  │
+│                 │         │                │                       │ should trigger a retry.               │
+│                 │         │                │                       │     optimizable_params (list): List   │
+│                 │         │                │                       │ of parameters that can be optimized.  │
+│                 │         │                │                       │     search_space (dict): Optional     │
+│                 │         │                │                       │ search space overrides for            │
+│                 │         │                │                       │ optimizable parameters.               │
+│                 │         │                │                       │     _type (str): The type of the      │
+│                 │         │                │                       │ object.                               │
+│                 │         │                │                       │     api_type (APITypeEnum): The type  │
+│                 │         │                │                       │ of API to use for the LLM provider.   │
+│                 │         │                │                       │ Defaults to "chat_completion".        │
+│                 │         │                │                       │     api_key (pydantic.types.SecretStr │
+│                 │         │                │                       │ | None): API key to interact with     │
+│                 │         │                │                       │ hosted model. Defaults to None.       │
+│                 │         │                │                       │     base_url (str | None): Base url   │
+│                 │         │                │                       │ to the hosted model. Defaults to      │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     model_name (str): The LiteLlm     │
+│                 │         │                │                       │ hosted model name.                    │
+│                 │         │                │                       │     seed (int | None): Random seed to │
+│                 │         │                │                       │ set for generation. Defaults to None. │
+│                 │         │                │                       │     temperature (float | None):       │
+│                 │         │                │                       │ Sampling temperature to control       │
+│                 │         │                │                       │ randomness in the output. Defaults to │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     top_p (float | None): Top-p for   │
+│                 │         │                │                       │ distribution sampling. Defaults to    │
+│                 │         │                │                       │ None.                                 │
+├─────────────────┼─────────┼────────────────┼───────────────────────┼───────────────────────────────────────┤
+│ nvidia-nat-core │ 1.8.0   │ llm_provider   │ nim                   │ An NVIDIA Inference Microservice      │
+│                 │         │                │                       │ (NIM) llm provider to be used with an │
+│                 │         │                │                       │ LLM client.                           │
+│                 │         │                │                       │                                       │
+│                 │         │                │                       │   Args:                               │
+│                 │         │                │                       │     verify_ssl (bool): Whether to     │
+│                 │         │                │                       │ verify SSL certificates when making   │
+│                 │         │                │                       │ API calls to the LLM provider.        │
+│                 │         │                │                       │ Defaults to True. Defaults to True.   │
+│                 │         │                │                       │     thinking (bool | None): Whether   │
+│                 │         │                │                       │ to enable thinking. Defaults to None  │
+│                 │         │                │                       │ when supported on the model. Defaults │
+│                 │         │                │                       │ to None.                              │
+│                 │         │                │                       │     optimizable_params (list): List   │
+│                 │         │                │                       │ of parameters that can be optimized.  │
+│                 │         │                │                       │     search_space (dict): Optional     │
+│                 │         │                │                       │ search space overrides for            │
+│                 │         │                │                       │ optimizable parameters.               │
+│                 │         │                │                       │     do_auto_retry (bool): Whether to  │
+│                 │         │                │                       │ automatically retry method calls that │
+│                 │         │                │                       │ fail with a retryable error. Defaults │
+│                 │         │                │                       │ to True.                              │
+│                 │         │                │                       │     num_retries (int): Number of      │
+│                 │         │                │                       │ times to retry a method call that     │
+│                 │         │                │                       │ fails with a retryable error.         │
+│                 │         │                │                       │ Defaults to 5.                        │
+│                 │         │                │                       │     retry_on_status_codes (list):     │
+│                 │         │                │                       │ List of HTTP status codes that should │
+│                 │         │                │                       │ trigger a retry.                      │
+│                 │         │                │                       │     retry_on_errors (list[str] |      │
+│                 │         │                │                       │ None): List of error substrings that  │
+│                 │         │                │                       │ should trigger a retry.               │
+│                 │         │                │                       │     _type (str): The type of the      │
+│                 │         │                │                       │ object.                               │
+│                 │         │                │                       │     api_type (APITypeEnum): The type  │
+│                 │         │                │                       │ of API to use for the LLM provider.   │
+│                 │         │                │                       │ Defaults to "chat_completion".        │
+│                 │         │                │                       │     api_key (pydantic.types.SecretStr │
+│                 │         │                │                       │ | None): NVIDIA API key to interact   │
+│                 │         │                │                       │ with hosted NIM. Defaults to None.    │
+│                 │         │                │                       │     base_url (str | None): Base url   │
+│                 │         │                │                       │ to the hosted NIM. Defaults to None.  │
+│                 │         │                │                       │     model_name (str): The model name  │
+│                 │         │                │                       │ for the hosted NIM.                   │
+│                 │         │                │                       │     max_tokens (int): Maximum number  │
+│                 │         │                │                       │ of tokens to generate. Defaults to    │
+│                 │         │                │                       │ 300.                                  │
+│                 │         │                │                       │     temperature (float | None):       │
+│                 │         │                │                       │ Sampling temperature to control       │
+│                 │         │                │                       │ randomness in the output. Defaults to │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     top_p (float | None): Top-p for   │
+│                 │         │                │                       │ distribution sampling. Defaults to    │
+│                 │         │                │                       │ None.                                 │
+├─────────────────┼─────────┼────────────────┼───────────────────────┼───────────────────────────────────────┤
+│ nvidia-nat-core │ 1.8.0   │ llm_provider   │ oci                   │ OCI Generative AI LLM provider.       │
+│                 │         │                │                       │                                       │
+│                 │         │                │                       │   Args:                               │
+│                 │         │                │                       │     thinking (bool | None): Whether   │
+│                 │         │                │                       │ to enable thinking. Defaults to None  │
+│                 │         │                │                       │ when supported on the model. Defaults │
+│                 │         │                │                       │ to None.                              │
+│                 │         │                │                       │     optimizable_params (list): List   │
+│                 │         │                │                       │ of parameters that can be optimized.  │
+│                 │         │                │                       │     search_space (dict): Optional     │
+│                 │         │                │                       │ search space overrides for            │
+│                 │         │                │                       │ optimizable parameters.               │
+│                 │         │                │                       │     do_auto_retry (bool): Whether to  │
+│                 │         │                │                       │ automatically retry method calls that │
+│                 │         │                │                       │ fail with a retryable error. Defaults │
+│                 │         │                │                       │ to True.                              │
+│                 │         │                │                       │     num_retries (int): Number of      │
+│                 │         │                │                       │ times to retry a method call that     │
+│                 │         │                │                       │ fails with a retryable error.         │
+│                 │         │                │                       │ Defaults to 5.                        │
+│                 │         │                │                       │     retry_on_status_codes (list):     │
+│                 │         │                │                       │ List of HTTP status codes that should │
+│                 │         │                │                       │ trigger a retry.                      │
+│                 │         │                │                       │     retry_on_errors (list[str] |      │
+│                 │         │                │                       │ None): List of error substrings that  │
+│                 │         │                │                       │ should trigger a retry.               │
+│                 │         │                │                       │     _type (str): The type of the      │
+│                 │         │                │                       │ object.                               │
+│                 │         │                │                       │     api_type (APITypeEnum): The type  │
+│                 │         │                │                       │ of API to use for the LLM provider.   │
+│                 │         │                │                       │ Defaults to "chat_completion".        │
+│                 │         │                │                       │     region (str): OCI region for the  │
+│                 │         │                │                       │ Generative AI service. Used to build  │
+│                 │         │                │                       │ the endpoint when endpoint is not     │
+│                 │         │                │                       │ set. Defaults to "us-chicago-1".      │
+│                 │         │                │                       │     endpoint (str | None): OCI        │
+│                 │         │                │                       │ Generative AI service endpoint URL.   │
+│                 │         │                │                       │ Auto-derived from region when         │
+│                 │         │                │                       │ omitted. Defaults to None.            │
+│                 │         │                │                       │     compartment_id (str | None): OCI  │
+│                 │         │                │                       │ compartment OCID for Generative AI    │
+│                 │         │                │                       │ requests. Defaults to None.           │
+│                 │         │                │                       │     auth_type (str): OCI SDK          │
+│                 │         │                │                       │ authentication type: API_KEY,         │
+│                 │         │                │                       │ SECURITY_TOKEN, INSTANCE_PRINCIPAL,   │
+│                 │         │                │                       │ or RESOURCE_PRINCIPAL. Defaults to    │
+│                 │         │                │                       │ "API_KEY".                            │
+│                 │         │                │                       │     auth_profile (str): OCI config    │
+│                 │         │                │                       │ profile to use for API_KEY or         │
+│                 │         │                │                       │ SECURITY_TOKEN auth. Defaults to      │
+│                 │         │                │                       │ "DEFAULT".                            │
+│                 │         │                │                       │     auth_file_location (str): Path to │
+│                 │         │                │                       │ the OCI config file used for SDK      │
+│                 │         │                │                       │ authentication. Defaults to           │
+│                 │         │                │                       │ "~/.oci/config".                      │
+│                 │         │                │                       │     model_name (str): The OCI         │
+│                 │         │                │                       │ Generative AI model ID.               │
+│                 │         │                │                       │     provider (str | None): Optional   │
+│                 │         │                │                       │ OCI provider override such as cohere, │
+│                 │         │                │                       │ google, meta, or openai. Defaults to  │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     context_size (int | None): The    │
+│                 │         │                │                       │ maximum number of tokens available    │
+│                 │         │                │                       │ for input. Defaults to 1024.          │
+│                 │         │                │                       │     seed (int | None): Random seed to │
+│                 │         │                │                       │ set for generation. Defaults to None. │
+│                 │         │                │                       │     max_retries (int): The max number │
+│                 │         │                │                       │ of retries for the request. Defaults  │
+│                 │         │                │                       │ to 10.                                │
+│                 │         │                │                       │     max_tokens (int | None): Maximum  │
+│                 │         │                │                       │ number of output tokens. Defaults to  │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     temperature (float | None):       │
+│                 │         │                │                       │ Sampling temperature to control       │
+│                 │         │                │                       │ randomness in the output. Defaults to │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     top_p (float | None): Top-p for   │
+│                 │         │                │                       │ distribution sampling. Defaults to    │
+│                 │         │                │                       │ None.                                 │
+│                 │         │                │                       │     request_timeout (float | None):   │
+│                 │         │                │                       │ HTTP request timeout in seconds.      │
+│                 │         │                │                       │ Defaults to None.                     │
+└─────────────────┴─────────┴────────────────┴───────────────────────┴───────────────────────────────────────┘
+[0m

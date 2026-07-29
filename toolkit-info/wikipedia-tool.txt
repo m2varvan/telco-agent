@@ -1,0 +1,29 @@
+                                     NAT Search Results                                      
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ package              ┃ version ┃ component_type ┃ component_name ┃ description            ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ nvidia-nat-langchain │ 1.8.0   │ function       │ wiki_search    │ Tool that retrieves    │
+│                      │         │                │                │ relevant contexts from │
+│                      │         │                │                │ wikipedia search for   │
+│                      │         │                │                │ the given question.    │
+│                      │         │                │                │                        │
+│                      │         │                │                │   Args:                │
+│                      │         │                │                │     _type (str): The   │
+│                      │         │                │                │ type of the object.    │
+│                      │         │                │                │     name (str | None): │
+│                      │         │                │                │ Optional display name  │
+│                      │         │                │                │ for this function.     │
+│                      │         │                │                │ Used in tracing and    │
+│                      │         │                │                │ observability.         │
+│                      │         │                │                │ Defaults to None.      │
+│                      │         │                │                │     middleware (list): │
+│                      │         │                │                │ List of function       │
+│                      │         │                │                │ middleware names to    │
+│                      │         │                │                │ apply to this function │
+│                      │         │                │                │ in order.              │
+│                      │         │                │                │     max_results (int): │
+│                      │         │                │                │ Description            │
+│                      │         │                │                │ unavailable. Defaults  │
+│                      │         │                │                │ to 2.                  │
+└──────────────────────┴─────────┴────────────────┴────────────────┴────────────────────────┘
+[0m

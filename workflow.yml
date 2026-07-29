@@ -1,0 +1,22 @@
+functions:
+  # Define custom or built-in tools
+  wikipedia_search:
+    _type: wiki_search
+    max_results: 2
+  current_dateTime:
+    _type: current_datetime
+
+llms:
+  # Configure your LLM provider (e.g., NVIDIA NIMs)
+  nim_llm:
+    _type: nim
+    model_name: nvidia/nemotron-3-nano-30b-a3b
+    max_tokens: 1024
+    temperature: 0.0
+
+workflow:
+  # Select an agent architecture and attach the tools
+  _type: react_agent
+  llm_name: nim_llm
+  tool_names: [wikipedia_search, current_dateTime]
+  verbose: true

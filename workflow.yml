@@ -1,22 +1,113 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Network Incident Triage Assistant — NVIDIA NeMo Agent Toolkit
+# Rogers AI for Networks
+#
+# This file declares the PRIMARY workflow using tool_calling_agent (standard).
+# The react_agent FALLBACK is built programmatically in main.py — it does not
+# need a separate YAML because NAT's WorkflowBuilder accepts a dict directly.
+#
+# ACTIVE MODEL is controlled by ACTIVE_LLM in .env:
+#   ACTIVE_LLM=nemotron_nim     → NVIDIA NIM endpoint
+#   ACTIVE_LLM=azure_frontier   → Azure OpenAI (company-hosted)
+# ─────────────────────────────────────────────────────────────────────────────
+
 functions:
-  # Define custom or built-in tools
-  wikipedia_search:
-    _type: wiki_search
-    max_results: 2
-  current_dateTime:
-    _type: current_datetime
+  query_lte_kpi:
+    _type: query_lte_kpi
+    description: >
+      Query raw LTE PM counters and compute all five LTE KPIs for a cell on a date:
+      Accessibility (E-RAB Setup Success Rate %), Retainability (E-RAB % Lost),
+      DL Throughput (kbps), Cell Availability (%), DL PDCP DRB Latency (ms).
+      Returns kpis_evaluated list with value, baseline, status, plus raw_counters.
+      Arguments: cell_id (str), oss_id (str), year (int), month (int), day (int).
+
+  query_nr_endc:
+    _type: query_nr_endc
+    description: >
+      Query NR EN-DC PM counters and compute EN-DC Setup Success Rate for a 5G cell.
+      Returns kpis_evaluated with value, baseline, degradation status, and raw_counters.
+      Use for any 5G NSA / EN-DC investigation.
+      Arguments: nr_cell_id (str), oss_id (str), year (int), month (int), day (int).
+
+  query_cm_config:
+    _type: query_cm_config
+    description: >
+      Query configuration change records for a cell within a date window.
+      Returns changes list with ADMINISTRATIVESTATE, CELLBARRED, FREQBAND,
+      DLCHANNELBANDWIDTH, LATITUDE, LONGITUDE and their DATETIME_ID.
+      Use when Accessibility, DL Throughput, or DL Latency is degraded.
+      Arguments: cell_id (str), oss_id (str), before_date (str ISO-8601), days_back (int).
+
+  query_alarm_history:
+    _type: query_alarm_history
+    description: >
+      Retrieve cell downtime counters and alarm records for a cell on a date.
+      Returns PMCELLDOWNTIMEAUTO, PMCELLDOWNTIMEMAN, availability_pct, has_downtime,
+      and alarms list with alarm_name, severity, start/end time, description.
+      Use when Cell Availability is degraded.
+      Arguments: cell_id (str), oss_id (str), year (int), month (int), day (int).
 
 llms:
-  # Configure your LLM provider (e.g., NVIDIA NIMs)
-  nim_llm:
-    _type: nim
-    model_name: nvidia/nemotron-3-nano-30b-a3b
-    max_tokens: 1024
+  # NVIDIA NIM — OpenAI-compatible endpoint for Nemotron Telco and other NIM models
+  nemotron_nim:
+    _type: openai
+    model_name: ${LLM_MODEL_NAME}
+    api_key: ${LLM_API_KEY}
+    base_url: ${LLM_BASE_URL}
+    max_tokens: 4096
+    temperature: 0.0
+
+  # Azure OpenAI — company-hosted frontier model (GPT-4o, o1, etc.)
+  # Uses NAT's native azure_openai provider; fill AZURE_* vars in .env
+  azure_frontier:
+    _type: azure_openai
+    azure_endpoint: ${AZURE_OPENAI_ENDPOINT}
+    azure_deployment: ${AZURE_OPENAI_DEPLOYMENT}
+    api_key: ${AZURE_OPENAI_API_KEY}
+    api_version: "2025-04-01-preview"
+    max_tokens: 4096
     temperature: 0.0
 
 workflow:
-  # Select an agent architecture and attach the tools
-  _type: react_agent
-  llm_name: nim_llm
-  tool_names: [wikipedia_search, current_dateTime]
+  _type: tool_calling_agent
+  llm_name: nemotron_nim
+  tool_names:
+    - query_lte_kpi
+    - query_nr_endc
+    - query_cm_config
+    - query_alarm_history
+  system_prompt: |
+    You are the Network Incident Triage Assistant for Rogers — AI for Networks.
+    You MUST call tools to fetch real data. Never assume, guess, or fabricate numbers.
+
+    AVAILABLE DATA:
+    - LTE cells (query_lte_kpi):  INC1_CELL_A, INC2_CELL_B, INC3_CELL_C1, INC3_CELL_C2, INC3_CELL_C3, INC4_LTE_ANCHOR
+    - NR/5G cells (query_nr_endc): INC4_NR_D
+    - OSS instance for all cells: eniq_oss_1
+
+    INVESTIGATION STEPS:
+    1. Call query_lte_kpi (LTE cells) or query_nr_endc (5G/NR cells) first.
+       Parse year, month, day as integers from the incident date.
+    2. Based on degraded KPIs:
+       - Accessibility, DL Throughput, or DL Latency degraded → call query_cm_config(cell_id, oss_id, before_date=<date>, days_back=7)
+       - Cell Availability degraded → call query_alarm_history(cell_id, oss_id, year, month, day)
+       - EN-DC Setup Success Rate degraded → also call query_lte_kpi on INC4_LTE_ANCHOR to verify anchor is healthy
+    3. If a tool returns an error, record it as "Tool <name> failed: <reason>" in evidence.
+       Do NOT guess or fabricate what the tool would have returned.
+
+    OUTPUT — respond with ONLY this JSON, no other text:
+    {
+      "incident": "<original description>",
+      "kpis_evaluated": [{"kpi": "<name>", "value": <number or null>, "baseline": <number or null>, "status": "ok|degraded|unavailable"}],
+      "root_cause": "<single clear statement, max 200 characters>",
+      "evidence": ["<fact from tool output with actual numbers>"],
+      "confidence": "high|medium|low",
+      "further_investigation_required": true|false,
+      "recommended_next_step": "<specific actionable step>"
+    }
+
+    confidence = high   when evidence comes from 2+ independent tool sources
+    confidence = medium when evidence comes from 1 tool source with a clear signal
+    confidence = low    when data is missing, a tool failed, or signal is ambiguous
   verbose: true
+  max_iterations: 12

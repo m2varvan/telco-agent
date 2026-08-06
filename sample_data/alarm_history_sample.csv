@@ -1,0 +1,8 @@
+alarm_id,OSS_ID,EUTRANCELLFDD,alarm_name,severity,start_time,end_time,status,description
+ALM-INC2-001,eniq_oss_1,INC2_CELL_B,Backhaul Link Down,Critical,2026-06-29T00:00:00Z,2026-06-29T23:59:59Z,cleared,Physical backhaul link failure detected on INC2_CELL_B. Full cell outage. PMCELLDOWNTIMEAUTO=86400s.
+ALM-INC2-002,eniq_oss_1,INC2_CELL_B,Cell Outage,Critical,2026-06-29T00:00:00Z,2026-06-29T23:59:59Z,cleared,Cell completely down. No RRC connections established. Root cause: backhaul failure.
+ALM-INC1-001,eniq_oss_1,INC1_CELL_A,Cell Barred,Major,2026-06-27T00:00:00Z,2026-06-30T00:00:00Z,active,Cell barred following CM parameter change (CELLBARRED=1 ADMINISTRATIVESTATE=0). Accessibility dropped from 99.88% to 51.12%.
+ALM-INC3-001,eniq_oss_1,INC3_CELL_C1,High Interference,Major,2026-06-29T00:00:00Z,2026-06-29T23:59:59Z,active,High interference detected on eNB_INC3. DL throughput dropped 65% on INC3_CELL_C1. No local config change. Multi-cell impact suspected.
+ALM-INC3-002,eniq_oss_1,INC3_CELL_C2,High Interference,Major,2026-06-29T00:00:00Z,2026-06-29T23:59:59Z,active,High interference detected on eNB_INC3. DL throughput dropped 65% on INC3_CELL_C2. Correlated with INC3_CELL_C1 and INC3_CELL_C3.
+ALM-INC3-003,eniq_oss_1,INC3_CELL_C3,High Interference,Major,2026-06-29T00:00:00Z,2026-06-29T23:59:59Z,active,High interference detected on eNB_INC3. DL throughput dropped 65% on INC3_CELL_C3. All three cells on eNB_INC3 affected simultaneously.
+ALM-INC4-001,eniq_oss_1,INC4_LTE_ANCHOR,EN-DC Setup Failures,Warning,2026-06-30T00:00:00Z,2026-06-30T23:59:59Z,active,Elevated EN-DC setup failure rate on associated NR cell INC4_NR_D. LTE anchor INC4_LTE_ANCHOR remains healthy (accessibility 99.88%). 5G NSA layer issue.

@@ -84,7 +84,8 @@ def _extract_tool_trajectory(raw_output: str) -> list[str]:
     """
     tools: list[str] = []
     known = {
-        "query_lte_kpi", "query_nr_endc", "query_cm_config", "query_alarm_history"
+        "query_lte_kpi", "query_nr_endc", "query_cm_config", "query_alarm_history",
+        "query_neighbour_topology", "query_kpi_trend", "query_similar_incidents", "query_telecom_knowledge"
     }
     # Scan raw text for tool name mentions (case-insensitive)
     lower = raw_output.lower()

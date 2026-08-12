@@ -500,6 +500,206 @@ def generate_alarm_history() -> list[dict]:
     return rows
 
 
+# ── Incident Ticket History Generator ──────────────────────────────────────────
+
+TICKET_COLS = [
+    "ticket_id", "EUTRANCELLFDD", "OSS_ID", "created_date", "closed_date",
+    "root_cause_code", "summary", "resolution_notes", "engineer_id"
+]
+
+def generate_incident_history() -> list[dict]:
+    """Generate ~25 historical incident ticket records with resolution notes."""
+    tickets = [
+        # INC1 history
+        {
+            "ticket_id": "INC-2026-0412",
+            "EUTRANCELLFDD": "INC1_CELL_A",
+            "OSS_ID": OSS_ID,
+            "created_date": "2026-04-12T09:15:00",
+            "closed_date": "2026-04-12T14:30:00",
+            "root_cause_code": "CELL_BARRED_CHANGE",
+            "summary": "Accessibility dropped to 0% following maintenance window.",
+            "resolution_notes": "Reverted CELLBARRED parameter from 1 back to 0. Cell accessibility restored immediately.",
+            "engineer_id": "ENG_8820"
+        },
+        {
+            "ticket_id": "INC-2026-0518",
+            "EUTRANCELLFDD": "INC1_CELL_A",
+            "OSS_ID": OSS_ID,
+            "created_date": "2026-05-18T11:00:00",
+            "closed_date": "2026-05-18T16:45:00",
+            "root_cause_code": "ADMIN_STATE_CHANGE",
+            "summary": "Cell locked in eNodeB configuration during frequency audit.",
+            "resolution_notes": "Reset ADMINISTRATIVESTATE to 1 (Unlocked) via OSS Bulk CM script.",
+            "engineer_id": "ENG_4412"
+        },
+        # INC2 history
+        {
+            "ticket_id": "INC-2026-0425",
+            "EUTRANCELLFDD": "INC2_CELL_B",
+            "OSS_ID": OSS_ID,
+            "created_date": "2026-04-25T02:10:00",
+            "closed_date": "2026-04-25T08:00:00",
+            "root_cause_code": "BACKHAUL_LINK_DOWN",
+            "summary": "Site outage — loss of connection to MME/S-GW.",
+            "resolution_notes": "Field technician dispatched. Replaced faulty SFP module on microwave backhaul unit.",
+            "engineer_id": "ENG_1094"
+        },
+        {
+            "ticket_id": "INC-2026-0530",
+            "EUTRANCELLFDD": "INC2_CELL_B",
+            "OSS_ID": OSS_ID,
+            "created_date": "2026-05-30T14:22:00",
+            "closed_date": "2026-05-30T17:10:00",
+            "root_cause_code": "POWER_FAILURE",
+            "summary": "Site power lost due to local grid disturbance.",
+            "resolution_notes": "UPS battery backup held site for 3 hours; main power restored by hydro utility.",
+            "engineer_id": "ENG_3301"
+        },
+        # INC3 history
+        {
+            "ticket_id": "INC-2026-0504",
+            "EUTRANCELLFDD": "INC3_CELL_C1",
+            "OSS_ID": OSS_ID,
+            "created_date": "2026-05-04T10:00:00",
+            "closed_date": "2026-05-04T18:00:00",
+            "root_cause_code": "NEIGHBOUR_INTERFERENCE",
+            "summary": "DL Throughput degradation across eNB_INC3 co-site sectors.",
+            "resolution_notes": "Adjusted electrical antenna downtilt on sector 1 to minimize inter-cell interference.",
+            "engineer_id": "ENG_7719"
+        },
+        {
+            "ticket_id": "INC-2026-0505",
+            "EUTRANCELLFDD": "INC3_CELL_C2",
+            "OSS_ID": OSS_ID,
+            "created_date": "2026-05-04T10:30:00",
+            "closed_date": "2026-05-04T18:00:00",
+            "root_cause_code": "NEIGHBOUR_INTERFERENCE",
+            "summary": "Correlated DL throughput drop on adjacent sector C2.",
+            "resolution_notes": "Co-site interference resolved together with INC3_CELL_C1 antenna tilt adjustment.",
+            "engineer_id": "ENG_7719"
+        },
+        # INC4 NR history
+        {
+            "ticket_id": "INC-2026-0512",
+            "EUTRANCELLFDD": "INC4_NR_D",
+            "OSS_ID": OSS_ID,
+            "created_date": "2026-05-12T08:00:00",
+            "closed_date": "2026-05-12T13:15:00",
+            "root_cause_code": "NR_RANDOM_ACCESS_FAILURE",
+            "summary": "High 5G NSA EN-DC setup failure rate.",
+            "resolution_notes": "Re-indexed NR RACH preamble parameters on 5G gNodeB unit. EN-DC setup success restored to 98%.",
+            "engineer_id": "ENG_9011"
+        },
+        # INC5 history
+        {
+            "ticket_id": "INC-2026-0418",
+            "EUTRANCELLFDD": "INC5_CELL_F",
+            "OSS_ID": OSS_ID,
+            "created_date": "2026-04-18T15:00:00",
+            "closed_date": "2026-04-18T16:00:00",
+            "root_cause_code": "UNDETERMINED",
+            "summary": "Transient KPI fluctuation reported during peak traffic hour.",
+            "resolution_notes": "No network fault identified; KPI returned to baseline within 1 ROP. Ticket closed as non-incident.",
+            "engineer_id": "ENG_4412"
+        },
+    ]
+
+    # Add general history for background cells
+    for i, c in enumerate(CELLS[15:], start=100):
+        tickets.append({
+            "ticket_id": f"INC-2026-0{i}",
+            "EUTRANCELLFDD": c["cell"],
+            "OSS_ID": OSS_ID,
+            "created_date": "2026-04-05T10:00:00",
+            "closed_date": "2026-04-05T12:00:00",
+            "root_cause_code": "ROUTINE_MAINTENANCE",
+            "summary": "Scheduled firmware upgrade.",
+            "resolution_notes": "Upgraded software release; cell healthy.",
+            "engineer_id": "ENG_5500"
+        })
+    return tickets
+
+
+# ── Telecom Knowledge Base Generator ──────────────────────────────────────────
+
+def generate_telecom_knowledge(out_dir: Path) -> None:
+    """Generate seed Markdown knowledge document for RAG indexing."""
+    content = """# Telecom Operations & Ericsson ENIQ Knowledge Base
+
+## 1. Ericsson PM Counters & KPI Formulas Reference
+
+### 1.1 Accessibility — E-RAB Initial Setup Success Rate (%)
+- **Definition:** The percentage of attempts to establish an initial E-RAB (E-UTRAN Radio Access Bearer) that succeed.
+- **Formula:** `100 * (PMRRCCONNESTABSUCC / (PMRRCCONNESTABATT - PMRRCCONNESTABATTREATT)) * (PMS1SIGCONNESTABSUCC / PMS1SIGCONNESTABATT) * (PMERABESTABSUCCINIT / PMERABESTABATTINIT)`
+- **Key Counters:**
+  - `PMRRCCONNESTABSUCC`: Successful RRC Connection Establishments.
+  - `PMRRCCONNESTABATT`: RRC Connection Establishment Attempts.
+  - `PMRRCCONNESTABATTREATT`: RRC Connection Establishment Reattempts.
+  - `PMS1SIGCONNESTABSUCC`: Successful S1 Signalling Connection Establishments.
+  - `PMS1SIGCONNESTABATT`: S1 Signalling Connection Establishment Attempts.
+  - `PMERABESTABSUCCINIT`: Successful Initial E-RAB Establishments.
+  - `PMERABESTABATTINIT`: Initial E-RAB Establishment Attempts.
+- **Degradation Threshold:** Value < 95.0% or > 5.0 percentage points below baseline.
+
+### 1.2 Retainability — E-RAB % Lost (eNB-Triggered)
+- **Definition:** The share of active E-RAB connections released abnormally due to radio or eNodeB faults.
+- **Formula:** `100 * (PMERABRELABNORMALENB / (PMERABRELABNORMALENB + PMERABRELNORMALENB))`
+- **Degradation Threshold:** Value > 2.0%.
+
+### 1.3 Downlink Throughput (kbps)
+- **Definition:** User payload data rate on the DL Physical Downlink Shared Channel (PDSCH).
+- **Formula:** `(PMPDCPVOLDLDRB - PMPDCPVOLDLDRBLASTTTI) / PMUETHPTIMEDL` (vol in bits, time in ms → result in kbps).
+- **Degradation Threshold:** Value > 30% below baseline.
+
+### 1.4 Cell Availability (%)
+- **Definition:** The percentage of time a cell is operational and serving traffic during the ROP period.
+- **Formula:** `100 * (1 - (PMCELLDOWNTIMEAUTO + PMCELLDOWNTIMEMAN) / PERIOD_DURATION)`
+- **Degradation Threshold:** Value < 99.0%.
+
+### 1.5 5G EN-DC Setup Success Rate (%)
+- **Definition:** Success rate of dual-connectivity (E-UTRAN New Radio Dual Connectivity) setup attempts for 5G NSA UEs.
+- **Formula:** `100 * (pmEndcSetupUeSucc / pmEndcSetupUeAtt)`
+- **Degradation Threshold:** Value < 90.0%.
+
+---
+
+## 2. Configuration Parameters (CM) Reference
+
+- **ADMINISTRATIVESTATE:** Cell operational lock state. `1` = Unlocked (Normal), `0` = Locked (Cell shut down manually/administratively).
+- **CELLBARRED:** Cell access barring state. `0` = Cell Barred false (Normal), `1` = Cell Barred true (No UEs allowed to attach).
+- **DLCHANNELBANDWIDTH:** Channel bandwidth in kHz (e.g. `20000` = 20 MHz, `15000` = 15 MHz, `10000` = 10 MHz, `5000` = 5 MHz).
+- **FREQBAND:** E-UTRA Absolute Radio Frequency Channel Number / Frequency Band (Band 2 = 1900 MHz, Band 3 = 1800 MHz, Band 7 = 2600 MHz).
+
+---
+
+## 3. Standard Operating Procedures (SOPs) & Root Cause Playbooks
+
+### SOP-01: Recent Configuration Change (CELL_BARRED_CHANGE / ADMIN_STATE_CHANGE)
+- **Symptom:** Accessibility drops sharply to ~0% or low values on a specific cell.
+- **Diagnostic Procedure:** Query `cm_config_sample` for parameter modifications within 7 days prior to incident date. Check if `CELLBARRED` changed from `0` to `1` or `ADMINISTRATIVESTATE` changed from `1` to `0`.
+- **Recommended Action:** Revert parameter change via OSS Bulk CM or reset cell administrative state.
+
+### SOP-02: Cell / Site Outage (BACKHAUL_LINK_DOWN / POWER_FAILURE)
+- **Symptom:** Cell availability collapses to 0% (`PMCELLDOWNTIMEAUTO` = 86400s). All traffic counters zero.
+- **Diagnostic Procedure:** Query `alarm_history` for active alarms during the downtime window. Check for critical alarms like `Backhaul Link Down` or `Power Failure`.
+- **Recommended Action:** Dispatch field technician to inspect optical SFP module, microwave backhaul link, or local AC/DC power supply.
+
+### SOP-03: Co-Site / Sector Interference (NEIGHBOUR_INTERFERENCE)
+- **Symptom:** DL Throughput drops significantly across multiple co-located sectors on the same eNodeB (e.g., C1, C2, C3) while local CM config and alarms are clean.
+- **Diagnostic Procedure:** Query neighbour cell KPIs to confirm correlated throughput drops on surrounding sectors.
+- **Recommended Action:** Perform RF interference scan, inspect physical antenna orientation/downtilt, and check for external RF interference sources.
+
+### SOP-04: 5G NSA Setup Failure (NR_RANDOM_ACCESS_FAILURE)
+- **Symptom:** 5G `pmEndcSetupUeSucc` drops while LTE anchor cell accessibility remains healthy.
+- **Diagnostic Procedure:** Query `query_nr_endc` for NR cell and verify LTE anchor cell via `query_lte_kpi`.
+- **Recommended Action:** Audit NR RACH preamble parameters on gNodeB CU/DU and verify 5G NR radio link alignment.
+"""
+    kb_path = out_dir / "telecom_knowledge.md"
+    kb_path.write_text(content)
+    print(f"  ✓ {kb_path.name:40s} (seed RAG corpus)")
+
+
 # ── CSV writers ────────────────────────────────────────────────────────────────
 
 LTE_COLS = [
@@ -592,11 +792,19 @@ def main() -> None:
     alarm_rows = generate_alarm_history()
     write_csv(out_dir / "alarm_history.csv", alarm_rows, ALARM_COLS)
 
+    print("Generating incident ticket history...")
+    ticket_rows = generate_incident_history()
+    write_csv(out_dir / "incident_history.csv", ticket_rows, TICKET_COLS)
+
+    print("Generating telecom knowledge base...")
+    generate_telecom_knowledge(out_dir)
+
     row_counts = {
         "lte_kpi": len(lte_rows),
         "nr_endc": len(nr_rows),
         "cm_config": len(cm_rows),
         "alarm_history": len(alarm_rows),
+        "incident_history": len(ticket_rows),
     }
     write_manifest(out_dir, args.seed, row_counts)
 
@@ -609,3 +817,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

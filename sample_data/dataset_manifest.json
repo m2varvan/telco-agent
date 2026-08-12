@@ -1,7 +1,7 @@
 {
   "dataset_version": "synthetic_eniq_v2",
   "schema_version": "eniq_ericsson_2026",
-  "generated_at": "2026-08-11T20:14:26.635732+00:00",
+  "generated_at": "2026-08-12T00:52:13.686401+00:00",
   "random_seed": 42,
   "date_range": {
     "start": "2026-04-01",
@@ -11,7 +11,8 @@
     "lte_kpi": 2730,
     "nr_endc": 546,
     "cm_config": 32,
-    "alarm_history": 23
+    "alarm_history": 23,
+    "incident_history": 23
   },
   "scenario_dates": {
     "INC1_config_change": "2026-06-27",

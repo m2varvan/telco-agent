@@ -183,7 +183,7 @@ Each case is a JSON object on a single line (JSONL). Fields:
     "root_cause_code": "CELL_BARRED_CHANGE",
     "acceptable_root_cause_codes": ["CELL_BARRED_CHANGE", "ADMIN_STATE_CHANGE"],
     "required_tools": ["query_lte_kpi", "query_cm_config"],
-    "optional_tools": ["query_alarm_history"],
+    "optional_tools": ["query_alarm_history", "query_neighbour_topology", "query_kpi_trend", "query_similar_incidents", "query_telecom_knowledge"],
     "required_evidence": [
       {"source": "CM", "table": "cm_config_sample", "field": "CELLBARRED"},
       {"source": "KPI", "metric": "accessibility"}

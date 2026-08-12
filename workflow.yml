@@ -47,6 +47,31 @@ functions:
       Use when Cell Availability is degraded.
       Arguments: cell_id (str), oss_id (str), year (int), month (int), day (int).
 
+  query_neighbour_topology:
+    _type: query_neighbour_topology
+    description: >
+      Find co-site sectors (same eNodeB) and spatial neighbour cells within a geographic radius.
+      Use when evaluating multi-cell degradation or neighbour interference.
+      Arguments: cell_id (str), oss_id (str, default eniq_oss_1), radius_km (float, default 3.0).
+
+  query_kpi_trend:
+    _type: query_kpi_trend
+    description: >
+      Retrieve 14-day time-series KPI trend and pattern classification (step_drop vs gradual_decline vs stable).
+      Arguments: cell_id (str), oss_id (str), end_date (str ISO-8601), days (int, default 14).
+
+  query_similar_incidents:
+    _type: query_similar_incidents
+    description: >
+      Search historical ticket records in incident_history.csv for past resolved incidents on a cell or root cause category.
+      Arguments: cell_id (str, optional), root_cause_code (str, optional), limit (int, default 5).
+
+  query_telecom_knowledge:
+    _type: query_telecom_knowledge
+    description: >
+      Search telecom operations manuals, Ericsson KPI user guides, and SOP playbooks in sample_data/telecom_knowledge.md.
+      Arguments: query (str), max_sections (int, default 3).
+
 llms:
   # NVIDIA NIM — OpenAI-compatible endpoint for Nemotron Telco and other NIM models
   nemotron_nim:
@@ -76,6 +101,10 @@ workflow:
     - query_nr_endc
     - query_cm_config
     - query_alarm_history
+    - query_neighbour_topology
+    - query_kpi_trend
+    - query_similar_incidents
+    - query_telecom_knowledge
   system_prompt: |
     You are the Network Incident Triage Assistant for Rogers — AI for Networks.
     You MUST call tools to fetch real data. Never assume, guess, or fabricate numbers.
@@ -83,6 +112,7 @@ workflow:
     AVAILABLE DATA:
     - LTE cells (query_lte_kpi):  INC1_CELL_A, INC2_CELL_B, INC3_CELL_C1, INC3_CELL_C2, INC3_CELL_C3, INC4_LTE_ANCHOR
     - NR/5G cells (query_nr_endc): INC4_NR_D
+
     - OSS instance for all cells: eniq_oss_1
 
     INVESTIGATION STEPS:

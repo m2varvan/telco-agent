@@ -1,0 +1,24 @@
+ticket_id,EUTRANCELLFDD,OSS_ID,created_date,closed_date,root_cause_code,summary,resolution_notes,engineer_id
+INC-2026-0412,INC1_CELL_A,eniq_oss_1,2026-04-12T09:15:00,2026-04-12T14:30:00,CELL_BARRED_CHANGE,Accessibility dropped to 0% following maintenance window.,Reverted CELLBARRED parameter from 1 back to 0. Cell accessibility restored immediately.,ENG_8820
+INC-2026-0518,INC1_CELL_A,eniq_oss_1,2026-05-18T11:00:00,2026-05-18T16:45:00,ADMIN_STATE_CHANGE,Cell locked in eNodeB configuration during frequency audit.,Reset ADMINISTRATIVESTATE to 1 (Unlocked) via OSS Bulk CM script.,ENG_4412
+INC-2026-0425,INC2_CELL_B,eniq_oss_1,2026-04-25T02:10:00,2026-04-25T08:00:00,BACKHAUL_LINK_DOWN,Site outage — loss of connection to MME/S-GW.,Field technician dispatched. Replaced faulty SFP module on microwave backhaul unit.,ENG_1094
+INC-2026-0530,INC2_CELL_B,eniq_oss_1,2026-05-30T14:22:00,2026-05-30T17:10:00,POWER_FAILURE,Site power lost due to local grid disturbance.,UPS battery backup held site for 3 hours; main power restored by hydro utility.,ENG_3301
+INC-2026-0504,INC3_CELL_C1,eniq_oss_1,2026-05-04T10:00:00,2026-05-04T18:00:00,NEIGHBOUR_INTERFERENCE,DL Throughput degradation across eNB_INC3 co-site sectors.,Adjusted electrical antenna downtilt on sector 1 to minimize inter-cell interference.,ENG_7719
+INC-2026-0505,INC3_CELL_C2,eniq_oss_1,2026-05-04T10:30:00,2026-05-04T18:00:00,NEIGHBOUR_INTERFERENCE,Correlated DL throughput drop on adjacent sector C2.,Co-site interference resolved together with INC3_CELL_C1 antenna tilt adjustment.,ENG_7719
+INC-2026-0512,INC4_NR_D,eniq_oss_1,2026-05-12T08:00:00,2026-05-12T13:15:00,NR_RANDOM_ACCESS_FAILURE,High 5G NSA EN-DC setup failure rate.,Re-indexed NR RACH preamble parameters on 5G gNodeB unit. EN-DC setup success restored to 98%.,ENG_9011
+INC-2026-0418,INC5_CELL_F,eniq_oss_1,2026-04-18T15:00:00,2026-04-18T16:00:00,UNDETERMINED,Transient KPI fluctuation reported during peak traffic hour.,No network fault identified; KPI returned to baseline within 1 ROP. Ticket closed as non-incident.,ENG_4412
+INC-2026-0100,INC4_CELL_Y,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0101,GEN1_CELL_A,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0102,GEN1_CELL_B,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0103,GEN1_CELL_C,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0104,GEN1_CELL_D,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0105,GEN2_CELL_A,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0106,GEN2_CELL_B,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0107,GEN2_CELL_C,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0108,GEN2_CELL_D,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0109,GEN2_CELL_E,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0110,INC5_CELL_F,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0111,INC5_CELL_G,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0112,INC5_CELL_H,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0113,INC5_CELL_I,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500
+INC-2026-0114,INC5_CELL_J,eniq_oss_1,2026-04-05T10:00:00,2026-04-05T12:00:00,ROUTINE_MAINTENANCE,Scheduled firmware upgrade.,Upgraded software release; cell healthy.,ENG_5500

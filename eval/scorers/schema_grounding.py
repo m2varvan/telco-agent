@@ -47,9 +47,15 @@ VALID_ALARM_COLUMNS: frozenset[str] = frozenset({
     "status", "description",
 })
 
+VALID_TICKET_COLUMNS: frozenset[str] = frozenset({
+    "ticket_id", "EUTRANCELLFDD", "OSS_ID",
+    "created_date", "closed_date", "root_cause_code",
+    "summary", "resolution_notes", "engineer_id",
+})
+
 # Union of all valid column/field names (case-insensitive matching done at runtime)
 ALL_VALID: frozenset[str] = (
-    VALID_LTE_COLUMNS | VALID_NR_COLUMNS | VALID_CM_COLUMNS | VALID_ALARM_COLUMNS
+    VALID_LTE_COLUMNS | VALID_NR_COLUMNS | VALID_CM_COLUMNS | VALID_ALARM_COLUMNS | VALID_TICKET_COLUMNS
 )
 
 # Pre-compute lowercase lookup for fast matching

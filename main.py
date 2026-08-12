@@ -157,6 +157,27 @@ class TriageLogger:
                         print(_c(DIM, f"     {line}"))
             if not result.get("alarms"):
                 print(_c(GREEN, "  No alarms on record for this date."))
+        elif "co_site_cells" in result:
+            print(_c(GREEN, f"  Topology: eNodeB={result.get('enodeb')}  Co-site sectors={result.get('co_site_count')}  Spatial neighbours={result.get('neighbour_count')}"))
+            for cs in result.get("co_site_cells", []):
+                print(_c(GREEN, f"  📡 Co-site: {cs['cell_id']}  Band={cs['band']}"))
+            for nb in result.get("spatial_neighbours", [])[:3]:
+                print(_c(GREEN, f"  🛰 Neighbour: {nb['cell_id']}  Distance={nb['distance_km']}km"))
+        elif "daily_trend" in result:
+            summ = result.get("summary", {})
+            print(_c(GREEN, f"  KPI Trend [{result.get('cell_id')}]: Pattern={summ.get('pattern')}  Days={result.get('window',{}).get('days')}"))
+            print(_c(GREEN, f"  Baseline Acc={summ.get('baseline_accessibility_pct')}%  Latest Acc={summ.get('latest_accessibility_pct')}%"))
+        elif "historical_tickets" in result:
+            print(_c(GREEN, f"  Similar Incidents Found: {result.get('match_count')} tickets"))
+            for tk in result.get("historical_tickets", [])[:3]:
+                print(_c(GREEN, f"  🎫 [{tk.get('ticket_id')}] {tk.get('created_date')[:10]}  {tk.get('root_cause_code')} — {tk.get('summary')}"))
+                if tk.get("resolution_notes"):
+                    print(_c(DIM, f"     Resolution: {tk['resolution_notes']}"))
+        elif "retrieved_knowledge" in result:
+            print(_c(GREEN, f"  Knowledge Retrieved: {result.get('match_count')} sections"))
+            for kn in result.get("retrieved_knowledge", []):
+                print(_c(GREEN, f"  📚 {kn.get('title')} (score: {kn.get('relevance_score')})"))
+
 
     def synthesising(self, src: str) -> None:
         self._hdr("🤖", f"LLM SYNTHESISING  ({src})", MAGENTA)

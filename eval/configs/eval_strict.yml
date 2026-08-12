@@ -1,0 +1,9 @@
+eval_mode: strict
+repetitions: 3
+dataset: eval/datasets/test/rca_cases.jsonl
+timeout_s: 90
+record_full_trace: true
+freeze_all_non_model_vars: true
+models:
+  - nemotron_nim
+  - azure_frontier

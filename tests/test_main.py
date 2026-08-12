@@ -4,7 +4,7 @@ Requirements: 11.3, 11.6
 """
 import pytest
 import os
-from main import _validate_env, _REQUIRED_VARS
+from main import _validate_env, _REQUIRED_NIM as _REQUIRED_VARS
 
 
 class TestValidateEnv:

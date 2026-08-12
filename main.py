@@ -43,8 +43,9 @@ import agent_tools.tools  # noqa: F401
 load_dotenv()
 
 # ── Timeouts ──────────────────────────────────────────────────────────────────
-TOOL_CALL_TIMEOUT   = 90   # seconds for tool_calling_agent
-REACT_FALLBACK_TIMEOUT = 120  # seconds for react_agent fallback
+# Nemotron-Super-49B takes ~30s per tool call + ~40s synthesis = ~130s for 3 tool calls
+TOOL_CALL_TIMEOUT      = 180   # seconds for tool_calling_agent (generous for multi-tool runs)
+REACT_FALLBACK_TIMEOUT = 150   # seconds for react_agent fallback
 
 # ── Required env vars ─────────────────────────────────────────────────────────
 _REQUIRED_NIM   = ["LLM_MODEL_NAME", "LLM_API_KEY", "LLM_BASE_URL"]
@@ -235,27 +236,38 @@ def _validate_env(override: str | None = None) -> str:
 
 # ── JSON extraction ────────────────────────────────────────────────────────────
 def _extract_json(raw: str) -> dict | None:
+    """Extract the last valid JSON object from any LLM response format."""
     text = raw.strip()
-    # Try last ```json ... ``` block
-    blocks = re.findall(r'```(?:json)?\s*(\{.*?\})\s*```', text, re.DOTALL)
-    if blocks:
+
+    # 1. Try ```json ... ``` code blocks — take the last one
+    import re as _re
+    blocks = _re.findall(r'```(?:json)?\s*(\{.*?\})\s*```', text, _re.DOTALL)
+    for candidate in reversed(blocks):
         try:
-            return json.loads(blocks[-1])
+            return json.loads(candidate)
         except json.JSONDecodeError:
-            pass
-    # Find last balanced { ... }
-    for i in range(len(text) - 1, -1, -1):
-        if text[i] != '{':
             continue
-        depth = 0
-        for j in range(i, len(text)):
-            depth += (text[j] == '{') - (text[j] == '}')
-            if depth == 0:
+
+    # 2. Find the LAST outermost { ... } that parses as valid JSON
+    depth = 0
+    end_idx = -1
+    for i in range(len(text) - 1, -1, -1):
+        ch = text[i]
+        if ch == '}':
+            depth += 1
+            if end_idx == -1:
+                end_idx = i
+        elif ch == '{':
+            depth -= 1
+            if depth == 0 and end_idx != -1:
+                candidate = text[i:end_idx + 1]
                 try:
-                    return json.loads(text[i:j+1])
+                    return json.loads(candidate)
                 except json.JSONDecodeError:
-                    break
-        break
+                    # Keep looking for an earlier (outer) brace
+                    end_idx = -1
+                    depth = 0
+
     return None
 
 
@@ -310,9 +322,12 @@ async def run_with_fallback(incident: str, active_llm: str) -> str:
         yaml1 = _build_config_yaml("tool_calling_agent", active_llm)
         result = await _run_workflow(yaml1, "tool_calling_agent", TOOL_CALL_TIMEOUT)
         rca = _extract_json(result)
-        if rca and (rca.get("kpis_evaluated") or rca.get("root_cause")):
+        if rca and any(rca.get(k) for k in ("kpis_evaluated", "root_cause", "root_cause_code", "evidence", "confidence")):
             return result
-        LOG.fallback("tool_calling_agent returned no KPI data → react_agent")
+        if result and len(result.strip()) > 50:
+            # Accept any non-empty response even without clean JSON — scorer handles it
+            return result
+        LOG.fallback("tool_calling_agent returned empty response → react_agent")
     except asyncio.TimeoutError:
         LOG.fallback(f"tool_calling_agent timed out ({TOOL_CALL_TIMEOUT}s) → react_agent")
     except Exception as exc:

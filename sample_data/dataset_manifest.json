@@ -1,0 +1,66 @@
+{
+  "dataset_version": "synthetic_eniq_v2",
+  "schema_version": "eniq_ericsson_2026",
+  "generated_at": "2026-08-11T20:14:26.635732+00:00",
+  "random_seed": 42,
+  "date_range": {
+    "start": "2026-04-01",
+    "end": "2026-06-30"
+  },
+  "row_counts": {
+    "lte_kpi": 2730,
+    "nr_endc": 546,
+    "cm_config": 32,
+    "alarm_history": 23
+  },
+  "scenario_dates": {
+    "INC1_config_change": "2026-06-27",
+    "INC1_incident": "2026-06-29",
+    "INC2_outage": "2026-06-29",
+    "INC3_interference": "2026-06-29",
+    "INC4_endc_failure": "2026-06-30",
+    "INC5_ambiguous": "2026-06-28"
+  },
+  "cells": {
+    "lte_cells": [
+      "INC1_CELL_A",
+      "INC1_CELL_B",
+      "INC1_CELL_C",
+      "INC1_CELL_D",
+      "INC2_CELL_B",
+      "INC2_CELL_C",
+      "INC2_CELL_D",
+      "INC2_CELL_E",
+      "INC3_CELL_C1",
+      "INC3_CELL_C2",
+      "INC3_CELL_C3",
+      "INC3_CELL_C4",
+      "INC3_CELL_C5",
+      "INC4_LTE_ANCHOR",
+      "INC4_CELL_X",
+      "INC4_CELL_Y",
+      "GEN1_CELL_A",
+      "GEN1_CELL_B",
+      "GEN1_CELL_C",
+      "GEN1_CELL_D",
+      "GEN2_CELL_A",
+      "GEN2_CELL_B",
+      "GEN2_CELL_C",
+      "GEN2_CELL_D",
+      "GEN2_CELL_E",
+      "INC5_CELL_F",
+      "INC5_CELL_G",
+      "INC5_CELL_H",
+      "INC5_CELL_I",
+      "INC5_CELL_J"
+    ],
+    "nr_cells": [
+      "INC4_NR_D",
+      "NR_GEN1_A",
+      "NR_GEN1_B",
+      "NR_GEN2_A",
+      "NR_GEN2_B",
+      "NR_INC5_F"
+    ]
+  }
+}

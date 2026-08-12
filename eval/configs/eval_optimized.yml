@@ -1,0 +1,14 @@
+eval_mode: optimized
+repetitions: 3
+dataset: eval/datasets/test/rca_cases.jsonl
+timeout_s: 120
+record_full_trace: true
+freeze_all_non_model_vars: false
+notes: >
+  Mode B — Best Deployable Configuration.
+  Model-specific prompt/temperature tuning allowed on dev set.
+  Held-out test set must not be inspected before this run.
+  Never mix results from strict and optimized runs without labelling.
+models:
+  - nemotron_nim
+  - azure_frontier

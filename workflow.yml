@@ -110,4 +110,5 @@ workflow:
     confidence = medium when evidence comes from 1 tool source with a clear signal
     confidence = low    when data is missing, a tool failed, or signal is ambiguous
   verbose: true
-  max_iterations: 12
+  max_iterations: 15
+  handle_tool_errors: true

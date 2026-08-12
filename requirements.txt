@@ -1,2 +1,7 @@
 nvidia-nat[langchain]
+duckdb
 python-dotenv
+hypothesis
+pypdf
+rank-bm25
+

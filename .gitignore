@@ -216,3 +216,38 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+
+# ── Project-specific ──────────────────────────────────────────────────────────
+# API keys and secrets — NEVER commit
+.env
+.env.*
+!.env.example
+
+# Python virtual environment
+.venv/
+venv/
+
+# Eval run results (per-run JSON files)
+eval/results/
+
+# NAT temporary workflow configs created at runtime
+tmp_*.yml
+*.tmp.yml
+
+# macOS metadata
+.DS_Store
+
+# Kiro IDE settings (keep specs, exclude IDE-only state)
+.kiro/settings/
+
+# Hypothesis test database
+.hypothesis/
+
+# pytest cache
+.pytest_cache/
+
+# DuckDB temp files
+*.duckdb
+*.duckdb.wal

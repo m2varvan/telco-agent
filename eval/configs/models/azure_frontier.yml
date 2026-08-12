@@ -1,0 +1,8 @@
+model_id: azure_frontier
+category: frontier
+display_name: "Azure OpenAI Frontier Model"
+llm_name: azure_frontier
+temperature: 0.0
+max_tokens: 4096
+max_agent_steps: 12
+notes: "Company-hosted via Azure OpenAI"

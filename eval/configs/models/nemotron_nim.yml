@@ -1,0 +1,8 @@
+model_id: nemotron_nim
+category: open_source
+display_name: "NVIDIA Nemotron Telco (NIM)"
+llm_name: nemotron_nim        # matches workflow.yml llms key
+temperature: 0.0
+max_tokens: 4096
+max_agent_steps: 12
+notes: "Self-hosted via NVIDIA NIM API"

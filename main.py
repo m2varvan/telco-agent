@@ -69,14 +69,10 @@ AVAILABLE DATA & NODES:
   Reference 5G NR cell examples: INC4_NR_D
   OSS instance: eniq_oss_1 (or as specified in query)
 
-MANDATORY MULTI-STEP TRIAGE PROTOCOL:
-1. ALWAYS call primary KPI tool first: query_lte_kpi for 4G LTE or query_nr_endc for 5G NSA. Parse year, month, day as integers.
-2. ALWAYS perform follow-up diagnostic tool calls based on KPI status BEFORE generating final JSON:
-   - Accessibility, Retainability, DL Throughput, or Latency degraded → YOU MUST IMMEDIATELY CALL query_cm_config(cell_id, oss_id, before_date=<date>, days_back=7).
-   - Cell Availability degraded or 0% → YOU MUST IMMEDIATELY CALL query_alarm_history(cell_id, oss_id, year, month, day).
-   - EN-DC Setup Success Rate degraded → YOU MUST IMMEDIATELY CALL query_lte_kpi(cell_id="INC4_LTE_ANCHOR", oss_id="eniq_oss_1", year, month, day).
-3. NUMERIC EVIDENCE REQUIREMENT:
-   Every string in the evidence list MUST include exact numeric values directly quoted from tool outputs (e.g., "Accessibility 12.45% vs baseline 99.66%", "PMCELLDOWNTIMEAUTO=86400s", "CELLBARRED=1").
+HARD CONSTRAINTS:
+1. NEVER guess data. Always call tools to fetch real numeric data.
+2. Always execute 2-step tool calls: query_lte_kpi (for LTE) or query_nr_endc (for 5G NSA) FIRST, THEN follow up with query_cm_config (for Accessibility/Throughput drops) or query_alarm_history (for Availability outages).
+3. Format every item in evidence as structured key-value: "KPI: <Metric> = <Val> (Baseline: <Base>)", "CM: <Param> = <Val> on <Date>", "ALARM: <Name> [<Severity>] on <Date>".
 
 Return ONLY valid JSON matching this schema:
 {{

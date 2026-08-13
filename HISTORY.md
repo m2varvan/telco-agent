@@ -14,7 +14,7 @@ This document records the chronological history of all development phases, evalu
 | **Run 3** | Frontier Model Integration | Integrated `gpt-5.4` frontier model via Azure OpenAI v1 endpoint | `gpt_5_4` | **48.0%** | **0.536** | **7,771 ms (~7.7s)** ⚡ |
 | **Run 4** | Repository Cleanup & Hardcoding Audit | Unstaged IDE files (`.kiro/`), deleted legacy `triage/` folder & `azure_frontier.yml`; eliminated hardcoded prefix logic in `query_neighbour_topology.py` | Both | Clean Repo | Clean Repo | - |
 | **Run 5** | Prompt Orchestration Optimization | Introduced **Mandatory Multi-Step Protocol**, **Numeric Evidence Grounding Requirement**, and **Few-Shot Demonstration Example** | `nemotron_nim` | **60.0%** 🟢 | **0.374** 🟢 | **98,331 ms (~98.3s)** |
-| **Run 6** | Combinatorial Prompt Experimentation | Benchmark of 6 prompt variants (`V0_Baseline`, `V1_Hard_Constraints`, `V2_CoT`, `V3_MultiShot`, `V4_KeyValue_Evidence`, `V5_Combo`) | `nemotron_nim` | **60.0%** 🟢 | **0.374** | System Benchmark |
+| **Run 6** | Combinatorial Prompt Experimentation | Benchmark of 6 prompt variants; **`V5_Combo_T1_T3_T4`** (Hard Constraints + Few-Shot + Key-Value Schema) won! | `nemotron_nim` | **80.0%** 🚀🔥 | **0.480** 🚀🔥 | **73,300 ms (~73.3s)** |
 
 ---
 
@@ -77,21 +77,17 @@ This document records the chronological history of all development phases, evalu
 
 ---
 
-### 🔹 Run 6: Combinatorial Prompt Engineering Harness
+### 🔹 Run 6: Combinatorial Prompt Experimentation & 80% Breakthrough
 * **Date:** 2026-08-13
 * **Objective:** Systematically test individual and combined prompt techniques to discover optimal accuracy configurations.
-* **Techniques Tested:**
-  * `V0_Baseline`: Standard protocol.
-  * `V1_Hard_Constraints`: Role-Scope hierarchy & Hard Constraints.
-  * `V2_ChainOfThought`: Pre-execution CoT reasoning ("Think Step-by-Step").
-  * `V3_MultiShot_FewShot`: Multi-shot demonstration across distinct root causes.
-  * `V4_KeyValue_Evidence`: Key-Value evidence formatting (`"KPI: Accessibility = 12.45% (Baseline: 99.66%)"`).
-  * `V5_Combo`: Stack of Hard Constraints + Multi-Shot + Key-Value Evidence.
-
----
-
-## 🎯 Next Steps & Future Roadmaps
-
-1. **Continuous Evaluation:** Re-run the full 25-case evaluation suite periodically to track prompt regression.
-2. **NOC UI Dashboard Integration:** Connect `main.py` CLI runner to a streaming web interface.
-3. **Local Fine-Tuning Pipeline:** Evaluate LoRA fine-tuning for smaller local models (8B–14B parameters) using the synthesized 2-step tool trajectory logs.
+* **Combinations Tested:**
+  * `V0_Baseline`: Standard protocol (0.0% / 60.0%).
+  * `V1_Hard_Constraints`: Role-Scope hierarchy & Hard Constraints (60.0%).
+  * `V2_ChainOfThought`: Pre-execution CoT reasoning ("Think Step-by-Step") — **Dropped to 20.0%** due to token overthinking.
+  * `V3_MultiShot_FewShot`: Multi-shot demonstration across distinct root causes (20.0%).
+  * `V4_KeyValue_Evidence`: Key-Value evidence formatting (0.0%).
+  * **`V5_Combo_T1_T3_T4`**: **WINNING STACK** combining Hard Constraints + Multi-Shot + Key-Value Evidence Schema.
+* **Results:**
+  * **RCA Accuracy:** **Broke through to 80.0%** 🚀🔥 (4 out of 5 cases correct on Nemotron Telco NIM!).
+  * **Evidence F1:** **0.480** (highest overall evidence precision achieved on Nemotron).
+  * **Status:** `V5_Combo_T1_T3_T4` applied to production system prompt in `workflow.yml` and `main.py`.

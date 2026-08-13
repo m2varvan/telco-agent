@@ -1,149 +1,105 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# Network Incident Triage Assistant — NVIDIA NeMo Agent Toolkit
-# Rogers AI for Networks
-#
-# This file declares the PRIMARY workflow using tool_calling_agent (standard).
-# The react_agent FALLBACK is built programmatically in main.py — it does not
-# need a separate YAML because NAT's WorkflowBuilder accepts a dict directly.
-#
-# ACTIVE MODEL is controlled by ACTIVE_LLM in .env:
-#   ACTIVE_LLM=nemotron_nim     → NVIDIA NIM endpoint
-#   ACTIVE_LLM=azure_frontier   → Azure OpenAI (company-hosted)
-# ─────────────────────────────────────────────────────────────────────────────
-
 functions:
+  query_alarm_history:
+    _type: query_alarm_history
+    description: 'Retrieve cell downtime counters and alarm records for a cell on
+      a date. Returns PMCELLDOWNTIMEAUTO, PMCELLDOWNTIMEMAN, availability_pct, has_downtime,
+      and alarms list with alarm_name, severity, start/end time, description. Use
+      when Cell Availability is degraded. Arguments: cell_id (str), oss_id (str),
+      year (int), month (int), day (int).
+
+      '
+  query_cm_config:
+    _type: query_cm_config
+    description: 'Query configuration change records for a cell within a date window.
+      Returns changes list with ADMINISTRATIVESTATE, CELLBARRED, FREQBAND, DLCHANNELBANDWIDTH,
+      LATITUDE, LONGITUDE and their DATETIME_ID. Use when Accessibility, DL Throughput,
+      or DL Latency is degraded. Arguments: cell_id (str), oss_id (str), before_date
+      (str ISO-8601), days_back (int).
+
+      '
+  query_kpi_trend:
+    _type: query_kpi_trend
+    description: 'Retrieve 14-day time-series KPI trend and pattern classification
+      (step_drop vs gradual_decline vs stable). Arguments: cell_id (str), oss_id (str),
+      end_date (str ISO-8601), days (int, default 14).
+
+      '
   query_lte_kpi:
     _type: query_lte_kpi
-    description: >
-      Query raw LTE PM counters and compute all five LTE KPIs for a cell on a date:
-      Accessibility (E-RAB Setup Success Rate %), Retainability (E-RAB % Lost),
-      DL Throughput (kbps), Cell Availability (%), DL PDCP DRB Latency (ms).
+    description: 'Query raw LTE PM counters and compute all five LTE KPIs for a cell
+      on a date: Accessibility (E-RAB Setup Success Rate %), Retainability (E-RAB
+      % Lost), DL Throughput (kbps), Cell Availability (%), DL PDCP DRB Latency (ms).
       Returns kpis_evaluated list with value, baseline, status, plus raw_counters.
       Arguments: cell_id (str), oss_id (str), year (int), month (int), day (int).
 
-  query_nr_endc:
-    _type: query_nr_endc
-    description: >
-      Query NR EN-DC PM counters and compute EN-DC Setup Success Rate for a 5G cell.
-      Returns kpis_evaluated with value, baseline, degradation status, and raw_counters.
-      Use for any 5G NSA / EN-DC investigation.
-      Arguments: nr_cell_id (str), oss_id (str), year (int), month (int), day (int).
-
-  query_cm_config:
-    _type: query_cm_config
-    description: >
-      Query configuration change records for a cell within a date window.
-      Returns changes list with ADMINISTRATIVESTATE, CELLBARRED, FREQBAND,
-      DLCHANNELBANDWIDTH, LATITUDE, LONGITUDE and their DATETIME_ID.
-      Use when Accessibility, DL Throughput, or DL Latency is degraded.
-      Arguments: cell_id (str), oss_id (str), before_date (str ISO-8601), days_back (int).
-
-  query_alarm_history:
-    _type: query_alarm_history
-    description: >
-      Retrieve cell downtime counters and alarm records for a cell on a date.
-      Returns PMCELLDOWNTIMEAUTO, PMCELLDOWNTIMEMAN, availability_pct, has_downtime,
-      and alarms list with alarm_name, severity, start/end time, description.
-      Use when Cell Availability is degraded.
-      Arguments: cell_id (str), oss_id (str), year (int), month (int), day (int).
-
+      '
   query_neighbour_topology:
     _type: query_neighbour_topology
-    description: >
-      Find co-site sectors (same eNodeB) and spatial neighbour cells within a geographic radius.
-      Use when evaluating multi-cell degradation or neighbour interference.
-      Arguments: cell_id (str), oss_id (str, default eniq_oss_1), radius_km (float, default 3.0).
+    description: 'Find co-site sectors (same eNodeB) and spatial neighbour cells within
+      a geographic radius. Use when evaluating multi-cell degradation or neighbour
+      interference. Arguments: cell_id (str), oss_id (str, default eniq_oss_1), radius_km
+      (float, default 3.0).
 
-  query_kpi_trend:
-    _type: query_kpi_trend
-    description: >
-      Retrieve 14-day time-series KPI trend and pattern classification (step_drop vs gradual_decline vs stable).
-      Arguments: cell_id (str), oss_id (str), end_date (str ISO-8601), days (int, default 14).
+      '
+  query_nr_endc:
+    _type: query_nr_endc
+    description: 'Query NR EN-DC PM counters and compute EN-DC Setup Success Rate
+      for a 5G cell. Returns kpis_evaluated with value, baseline, degradation status,
+      and raw_counters. Use for any 5G NSA / EN-DC investigation. Arguments: nr_cell_id
+      (str), oss_id (str), year (int), month (int), day (int).
 
+      '
   query_similar_incidents:
     _type: query_similar_incidents
-    description: >
-      Search historical ticket records in incident_history.csv for past resolved incidents on a cell or root cause category.
-      Arguments: cell_id (str, optional), root_cause_code (str, optional), limit (int, default 5).
+    description: 'Search historical ticket records in incident_history.csv for past
+      resolved incidents on a cell or root cause category. Arguments: cell_id (str,
+      optional), root_cause_code (str, optional), limit (int, default 5).
 
+      '
   query_telecom_knowledge:
     _type: query_telecom_knowledge
-    description: >
-      Search telecom operations manuals, Ericsson KPI user guides, and SOP playbooks in sample_data/telecom_knowledge.md.
-      Arguments: query (str), max_sections (int, default 3).
+    description: 'Search telecom operations manuals, Ericsson KPI user guides, and
+      SOP playbooks in sample_data/telecom_knowledge.md. Arguments: query (str), max_sections
+      (int, default 3).
 
+      '
 llms:
-  # NVIDIA NIM — OpenAI-compatible endpoint for Nemotron Telco and other NIM models
-  nemotron_nim:
-    _type: openai
-    model_name: ${LLM_MODEL_NAME}
-    api_key: ${LLM_API_KEY}
-    base_url: ${LLM_BASE_URL}
-    max_tokens: 4096
-    temperature: 0.0
-
-  # Foundry GPT-5.4 Frontier Model
   gpt_5_4:
     _type: openai
-    model_name: ${FRONTIER_MODEL_NAME}
     api_key: ${FRONTIER_API_KEY}
     base_url: ${FRONTIER_BASE_URL}
     max_tokens: 4096
+    model_name: ${FRONTIER_MODEL_NAME}
     temperature: 0.0
-
-
-
+  nemotron_nim:
+    _type: openai
+    api_key: ${LLM_API_KEY}
+    base_url: ${LLM_BASE_URL}
+    max_tokens: 4096
+    model_name: ${LLM_MODEL_NAME}
+    temperature: 0.0
 workflow:
   _type: tool_calling_agent
-  llm_name: nemotron_nim
-  tool_names:
-    - query_lte_kpi
-    - query_nr_endc
-    - query_cm_config
-    - query_alarm_history
-    - query_neighbour_topology
-    - query_kpi_trend
-    - query_similar_incidents
-    - query_telecom_knowledge
-  system_prompt: |
-    You are the Network Incident Triage Assistant for Rogers — AI for Networks.
-    You MUST call tools to fetch real data. Never assume, guess, or fabricate numbers.
-
-    AVAILABLE DATA & NODES:
-    - You can query any 4G LTE or 5G NR cell ID and OSS instance specified in the query.
-    - Reference LTE cell examples: INC1_CELL_A, INC2_CELL_B, INC3_CELL_C1, INC4_LTE_ANCHOR
-    - Reference 5G NR cell examples: INC4_NR_D
-    - OSS instance: eniq_oss_1 (or as specified in query)
-
-    MANDATORY MULTI-STEP TRIAGE PROTOCOL:
-    1. ALWAYS call primary KPI tool first: `query_lte_kpi` for 4G LTE or `query_nr_endc` for 5G NSA.
-       Parse year, month, day as integers from the incident date.
-    2. ALWAYS perform follow-up diagnostic tool calls based on KPI status BEFORE generating final JSON:
-       - Accessibility, Retainability, DL Throughput, or Latency degraded → YOU MUST IMMEDIATELY CALL `query_cm_config(cell_id, oss_id, before_date=<date>, days_back=7)`.
-       - Cell Availability degraded or 0% → YOU MUST IMMEDIATELY CALL `query_alarm_history(cell_id, oss_id, year, month, day)`.
-       - EN-DC Setup Success Rate degraded → YOU MUST IMMEDIATELY CALL `query_lte_kpi(cell_id="INC4_LTE_ANCHOR", oss_id="eniq_oss_1", year, month, day)`.
-    3. NUMERIC EVIDENCE REQUIREMENT:
-       Every string in the `evidence` list MUST include exact numeric values directly quoted from tool outputs (e.g., "Accessibility 12.45% vs baseline 99.66%", "PMCELLDOWNTIMEAUTO=86400s", "CELLBARRED=1").
-
-    FEW-SHOT TRIAGE EXAMPLE:
-    Input: "Cell INC1_CELL_A on eniq_oss_1 is showing poor accessibility on 2026-06-29."
-    Step 1 Call: query_lte_kpi(cell_id="INC1_CELL_A", oss_id="eniq_oss_1", year=2026, month=6, day=29)
-    Step 1 Result: Accessibility=12.45% [degraded], baseline=99.66%.
-    Step 2 Call: query_cm_config(cell_id="INC1_CELL_A", oss_id="eniq_oss_1", before_date="2026-06-29", days_back=7)
-    Step 2 Result: Config record 2026-06-27 CELLBARRED=1, ADMINISTRATIVESTATE=0.
-    Final JSON Output:
-    {
-      "incident": "Cell INC1_CELL_A on eniq_oss_1 is showing poor accessibility on 2026-06-29.",
-      "kpis_evaluated": [{"kpi": "Accessibility", "value": 12.45, "baseline": 99.66, "status": "degraded"}],
-      "root_cause": "Cell Accessibility collapse caused by configuration change barring the cell on 2026-06-27 (CELLBARRED=1).",
-      "evidence": ["LTE KPI Accessibility degraded to 12.45% vs baseline 99.66%.", "CM config record on 2026-06-27 shows CELLBARRED=1 and ADMINISTRATIVESTATE=0."],
-      "confidence": "high",
-      "further_investigation_required": false,
-      "recommended_next_step": "Revert parameter change CELLBARRED to 0 on INC1_CELL_A via OSS Bulk CM."
-    }
-
-    Respond with ONLY valid JSON matching the exact schema above.
-  verbose: true
-  max_iterations: 15
   handle_tool_errors: true
-
+  llm_name: nemotron_nim
+  max_iterations: 15
+  system_prompt: "You are the Network Incident Triage Assistant for Rogers \u2014\
+    \ AI for Networks.\n\nREASONING PROTOCOL (THINK STEP-BY-STEP):\nBefore producing\
+    \ the final JSON response, analyze the incident logically:\nStep A: Identify target\
+    \ cell ID, OSS instance, and incident date.\nStep B: Query primary KPI counters\
+    \ (`query_lte_kpi` or `query_nr_endc`).\nStep C: Evaluate which KPIs are degraded\
+    \ (Accessibility, Throughput, Availability).\nStep D: Execute target diagnostic\
+    \ tool (`query_cm_config` for config changes; `query_alarm_history` for outages).\n\
+    Step E: Formulate root cause and quote exact numbers in the evidence array.\n\n\
+    Return valid JSON with: incident, kpis_evaluated, root_cause, evidence, confidence,\
+    \ further_investigation_required, recommended_next_step."
+  tool_names:
+  - query_lte_kpi
+  - query_nr_endc
+  - query_cm_config
+  - query_alarm_history
+  - query_neighbour_topology
+  - query_kpi_trend
+  - query_similar_incidents
+  - query_telecom_knowledge
+  verbose: true

@@ -61,27 +61,33 @@ You have access to these tools:
 
 Tool names: {tool_names}
 
-You MUST call at least one tool before answering. Never fabricate data.
+You MUST call tools to fetch real data. Never assume, guess, or fabricate numbers.
 
-AVAILABLE DATA:
-  LTE cells  (query_lte_kpi):  INC1_CELL_A, INC2_CELL_B, INC3_CELL_C1, INC3_CELL_C2, INC3_CELL_C3, INC4_LTE_ANCHOR
-  NR/5G cells (query_nr_endc): INC4_NR_D
-  OSS instance: eniq_oss_1
+AVAILABLE DATA & NODES:
+  You can query any 4G LTE or 5G NR cell ID and OSS instance specified in the query.
+  Reference LTE cell examples: INC1_CELL_A, INC2_CELL_B, INC3_CELL_C1, INC4_LTE_ANCHOR
+  Reference 5G NR cell examples: INC4_NR_D
+  OSS instance: eniq_oss_1 (or as specified in query)
 
-INVESTIGATION:
-1. Call query_lte_kpi (LTE) or query_nr_endc (5G) first. Parse year/month/day as integers.
-2. If Accessibility/Throughput/Latency degraded: call query_cm_config(cell_id, oss_id, before_date, days_back=7)
-   If Availability degraded: call query_alarm_history(cell_id, oss_id, year, month, day)
-   If EN-DC degraded: also call query_lte_kpi on INC4_LTE_ANCHOR
-3. If a tool fails, record "Tool X failed: reason" in evidence. Do NOT guess.
-4. Return ONLY this JSON when finished — replace all angle-bracket fields with real values:
-   "incident": the original description
-   "kpis_evaluated": list of kpi/value/baseline/status objects from tool output
-   "root_cause": single statement under 200 characters
-   "evidence": list of strings with actual numbers from tool output
-   "confidence": high (2+ sources) or medium (1 source) or low (failure/ambiguous)
-   "further_investigation_required": true or false
-   "recommended_next_step": specific actionable step"""
+MANDATORY MULTI-STEP TRIAGE PROTOCOL:
+1. ALWAYS call primary KPI tool first: query_lte_kpi for 4G LTE or query_nr_endc for 5G NSA. Parse year, month, day as integers.
+2. ALWAYS perform follow-up diagnostic tool calls based on KPI status BEFORE generating final JSON:
+   - Accessibility, Retainability, DL Throughput, or Latency degraded → YOU MUST IMMEDIATELY CALL query_cm_config(cell_id, oss_id, before_date=<date>, days_back=7).
+   - Cell Availability degraded or 0% → YOU MUST IMMEDIATELY CALL query_alarm_history(cell_id, oss_id, year, month, day).
+   - EN-DC Setup Success Rate degraded → YOU MUST IMMEDIATELY CALL query_lte_kpi(cell_id="INC4_LTE_ANCHOR", oss_id="eniq_oss_1", year, month, day).
+3. NUMERIC EVIDENCE REQUIREMENT:
+   Every string in the evidence list MUST include exact numeric values directly quoted from tool outputs (e.g., "Accessibility 12.45% vs baseline 99.66%", "PMCELLDOWNTIMEAUTO=86400s", "CELLBARRED=1").
+
+Return ONLY valid JSON matching this schema:
+{{
+  "incident": "<original description>",
+  "kpis_evaluated": [{{"kpi": "<name>", "value": <number or null>, "baseline": <number or null>, "status": "ok|degraded|unavailable"}}],
+  "root_cause": "<single clear statement, max 200 characters>",
+  "evidence": ["<fact from tool output with actual numbers>"],
+  "confidence": "high|medium|low",
+  "further_investigation_required": true|false,
+  "recommended_next_step": "<specific actionable step>"
+}}"""
 
 # ── ANSI colours ──────────────────────────────────────────────────────────────
 RESET   = "\033[0m";  BOLD  = "\033[1m";  DIM    = "\033[2m"

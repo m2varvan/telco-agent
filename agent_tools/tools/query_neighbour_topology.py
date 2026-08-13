@@ -112,7 +112,7 @@ async def query_neighbour_topology(tool_config: QueryNeighbourTopologyConfig, bu
                 "distance_km": dist,
             }
 
-            if other_enb == target_enb or (other_cell.startswith(target_cell[:4]) and not target_cell.startswith("GEN")):
+            if other_enb and other_enb == target_enb:
                 co_site.append(item)
             elif dist <= radius_km:
                 spatial_neighbours.append(item)

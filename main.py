@@ -4,7 +4,8 @@ Rogers AI for Networks | NVIDIA NeMo Agent Toolkit
 
 Model support:
   - NVIDIA NIM (Nemotron Telco or any NIM-hosted model)  → ACTIVE_LLM=nemotron_nim
-  - Azure OpenAI (company frontier model: GPT-4o, o1…)  → ACTIVE_LLM=azure_frontier
+  - NVIDIA NIM (Nemotron Telco or any NIM-hosted model)  → ACTIVE_LLM=nemotron_nim
+  - Commercial Frontier Model (Foundry GPT-5.4)         → ACTIVE_LLM=gpt_5_4
 
 Agent strategy:
   1. tool_calling_agent (standard — OpenAI function-calling protocol, works with all modern models)
@@ -15,7 +16,7 @@ Tool failures are recorded in evidence ("Tool X failed: reason") — never assum
 Usage:
     .venv/bin/python main.py                           # interactive loop
     .venv/bin/python main.py "Cell INC1_CELL_A..."    # single shot
-    .venv/bin/python main.py --model azure_frontier "..." # override model
+    .venv/bin/python main.py --model gpt_5_4 "..."     # override model
 """
 
 # ── stdlib ────────────────────────────────────────────────────────────────────
@@ -247,15 +248,16 @@ LOG = TriageLogger()
 # ── Env validation ─────────────────────────────────────────────────────────────
 def _validate_env(override: str | None = None) -> str:
     active = (override or os.getenv("ACTIVE_LLM", "nemotron_nim")).strip()
-    if active == "azure_frontier":
-        missing = [v for v in _REQUIRED_AZURE if not os.getenv(v) or os.getenv(v,"").startswith("placeholder")]
+    if active in ("gpt_5_4", "frontier", "azure_frontier"):
+        missing = [v for v in _REQUIRED_FRONTIER if not os.getenv(v) or "your-" in os.getenv(v, "")]
         if missing:
-            raise EnvironmentError(f"Azure vars not configured: {', '.join(missing)}. Set them in .env.")
+            raise EnvironmentError(f"Frontier model vars not configured: {', '.join(missing)}. Set FRONTIER_* in .env.")
+        return "gpt_5_4"
     else:
         missing = [v for v in _REQUIRED_NIM if not os.getenv(v)]
         if missing:
-            raise EnvironmentError(f"NVIDIA NIM vars missing: {', '.join(missing)}. Set them in .env.")
-    return active
+            raise EnvironmentError(f"NVIDIA NIM vars missing: {', '.join(missing)}. Set LLM_* in .env.")
+        return "nemotron_nim"
 
 
 # ── JSON extraction ────────────────────────────────────────────────────────────

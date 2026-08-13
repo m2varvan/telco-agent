@@ -8,6 +8,10 @@ from main import _validate_env, _REQUIRED_NIM as _REQUIRED_VARS
 
 
 class TestValidateEnv:
+    @pytest.fixture(autouse=True)
+    def setup_env(self, monkeypatch):
+        monkeypatch.setenv("ACTIVE_LLM", "nemotron_nim")
+
     def test_all_vars_set_passes(self, monkeypatch):
         """When all required vars are set, _validate_env should not raise."""
         for var in _REQUIRED_VARS:

@@ -4,7 +4,7 @@ Requirements: 2.1–2.9, 3.1–3.9, 12.1–12.4
 """
 import pytest
 import statistics
-from triage.kpi_calculator import (
+from agent_tools.kpi_calculator import (
     KPICalculator,
     ACCESSIBILITY_ABSOLUTE_THRESHOLD,
     RETAINABILITY_THRESHOLD,

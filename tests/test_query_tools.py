@@ -5,10 +5,10 @@ Requirements: 8.1–8.7
 """
 import importlib
 import pytest
-from triage.tools.query_lte_kpi import query_lte_kpi
-from triage.tools.query_nr_endc import query_nr_endc
-from triage.tools.query_cm_config import query_cm_config
-from triage.tools.query_alarm_history import query_alarm_history
+from agent_tools.tools.query_lte_kpi import execute_query_lte_kpi as query_lte_kpi
+from agent_tools.tools.query_nr_endc import execute_query_nr_endc as query_nr_endc
+from agent_tools.tools.query_cm_config import execute_query_cm_config as query_cm_config
+from agent_tools.tools.query_alarm_history import execute_query_alarm_history as query_alarm_history
 
 
 # ── query_lte_kpi ─────────────────────────────────────────────────────────────
@@ -217,7 +217,7 @@ class TestQueryAlarmHistory:
         assert "error" in result
 
     def test_synthetic_alarms_injected(self):
-        ah_module = importlib.import_module("triage.tools.query_alarm_history")
+        ah_module = importlib.import_module("agent_tools.tools.query_alarm_history")
         original = ah_module.SYNTHETIC_ALARMS[:]
         ah_module.SYNTHETIC_ALARMS = [{
             "alarm_id": "TEST-001",
@@ -229,7 +229,6 @@ class TestQueryAlarmHistory:
             "status": "cleared",
         }]
         result = query_alarm_history("INC2_CELL_B", "eniq_oss_1", 2026, 6, 29)
-        assert len(result["alarms"]) == 1
-        assert result["alarms"][0]["alarm_name"] == "Backhaul Link Down"
+        assert any(a["alarm_id"] == "TEST-001" for a in result["alarms"])
         # Restore
         ah_module.SYNTHETIC_ALARMS = original

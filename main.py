@@ -48,8 +48,9 @@ TOOL_CALL_TIMEOUT      = 180   # seconds for tool_calling_agent (generous for mu
 REACT_FALLBACK_TIMEOUT = 150   # seconds for react_agent fallback
 
 # ── Required env vars ─────────────────────────────────────────────────────────
-_REQUIRED_NIM   = ["LLM_MODEL_NAME", "LLM_API_KEY", "LLM_BASE_URL"]
-_REQUIRED_AZURE = ["AZURE_OPENAI_ENDPOINT", "AZURE_OPENAI_DEPLOYMENT", "AZURE_OPENAI_API_KEY"]
+_REQUIRED_NIM      = ["LLM_MODEL_NAME", "LLM_API_KEY", "LLM_BASE_URL"]
+_REQUIRED_FRONTIER = ["FRONTIER_MODEL_NAME", "FRONTIER_API_KEY", "FRONTIER_BASE_URL"]
+
 
 # ── react_agent system prompt (needs {tools} and {tool_names} placeholders) ───
 _REACT_SYSTEM_PROMPT = """\
@@ -404,7 +405,7 @@ def _print_banner(active_llm: str) -> None:
     print()
     print(_c(DIM, "  Active model:  ") + _c(WHITE, active_llm))
     print(_c(DIM, "  Agent type:    ") + _c(WHITE, "tool_calling_agent  →  react_agent (fallback)"))
-    print(_c(DIM, "  Switch model:  ") + _c(DIM, "set ACTIVE_LLM=azure_frontier in .env  OR  type 'switch azure'"))
+    print(_c(DIM, "  Switch model:  ") + _c(DIM, "set ACTIVE_LLM=gpt_5_4 in .env  OR  type 'switch frontier'"))
     print()
     print(_c(BOLD + WHITE, "  Sample queries:"))
     for i, q in enumerate(SAMPLE_QUERIES, 1):
@@ -412,7 +413,7 @@ def _print_banner(active_llm: str) -> None:
             print(_c(CYAN, f"  {'%d.' % i if j == 0 else '   '} {line}"))
     print()
     print(_c(DIM, "  Type your incident description and press Enter."))
-    print(_c(DIM, "  Commands: 'switch azure' | 'switch nim' | 'quit'"))
+    print(_c(DIM, "  Commands: 'switch frontier' | 'switch nim' | 'quit'"))
     print()
 
 
@@ -429,10 +430,10 @@ async def interactive_loop(active_llm: str) -> None:
             continue
         if raw.lower() in ("quit", "exit", "q"):
             print(_c(DIM, "  Goodbye.")); break
-        if raw.lower() in ("switch azure", "use azure"):
+        if raw.lower() in ("switch frontier", "use frontier", "switch gpt5", "use gpt5", "switch azure", "use azure"):
             try:
-                active_llm = _validate_env("azure_frontier")
-                print(_c(GREEN, f"  ✔ Switched to Azure OpenAI frontier model.\n"))
+                active_llm = _validate_env("gpt_5_4")
+                print(_c(GREEN, f"  ✔ Switched to GPT-5.4 Frontier Model.\n"))
             except EnvironmentError as e:
                 print(_c(RED, f"  ✗ {e}\n"))
             continue

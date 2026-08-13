@@ -34,10 +34,65 @@ class QueryLteKpiConfig(FunctionBaseConfig, name="query_lte_kpi"):
     pass
 
 
+def execute_query_lte_kpi(cell_id: str, oss_id: str, year: int, month: int, day: int) -> dict[str, Any]:
+    """
+    Synchronous execution function to query raw LTE PM counters and compute KPIs.
+    """
+    csv_path = os.getenv("LTE_KPI_CSV", "sample_data/lte_kpi_sample.csv")
+    log = _log()
+    args = {"cell_id": cell_id, "oss_id": oss_id, "year": year, "month": month, "day": day}
+    if log:
+        log.tool_called("query_lte_kpi", args)
+    t0 = time.monotonic()
+
+    con = duckdb.connect()
+    try:
+        result = con.execute(
+            """
+            SELECT * FROM read_csv_auto(?)
+            WHERE EUTRANCELLFDD = ?
+              AND OSS_ID = ?
+              AND YEAR_ID = ? AND MONTH_ID = ? AND DAY_ID = ?
+            """,
+            [csv_path, cell_id, oss_id, year, month, day],
+        )
+        row = result.fetchone()
+
+        if row is None:
+            out = {"error": f"No LTE data found for cell {cell_id} on {year}-{month:02d}-{day:02d}"}
+            if log:
+                log.tool_returned("query_lte_kpi", out, int((time.monotonic() - t0) * 1000))
+            return out
+
+        cols = [desc[0] for desc in con.description]
+        counters = dict(zip(cols, row))
+
+        prior_result = con.execute(
+            """
+            SELECT * FROM read_csv_auto(?)
+            WHERE EUTRANCELLFDD = ?
+              AND OSS_ID = ?
+              AND (YEAR_ID < ? OR (YEAR_ID = ? AND MONTH_ID < ?)
+                   OR (YEAR_ID = ? AND MONTH_ID = ? AND DAY_ID < ?))
+            """,
+            [csv_path, cell_id, oss_id,
+             year, year, month,
+             year, month, day],
+        )
+        prior_rows = prior_result.fetchall()
+
+        calc = KPICalculator()
+        out = calc.evaluate_lte(counters, prior_rows, cols)
+    finally:
+        con.close()
+
+    if log:
+        log.tool_returned("query_lte_kpi", out, int((time.monotonic() - t0) * 1000))
+    return out
+
+
 @register_function(config_type=QueryLteKpiConfig, framework_wrappers=[LLMFrameworkEnum.LANGCHAIN])
 async def query_lte_kpi(tool_config: QueryLteKpiConfig, builder: Builder):
-    csv_path = os.getenv("LTE_KPI_CSV", "sample_data/lte_kpi_sample.csv")
-
     async def _query_lte_kpi(cell_id: str, oss_id: str, year: int, month: int, day: int) -> dict[str, Any]:
         """
         Query raw LTE PM counters for a cell on a specific date.
@@ -53,56 +108,7 @@ async def query_lte_kpi(tool_config: QueryLteKpiConfig, builder: Builder):
         Returns:
             dict with kpis_evaluated list (kpi, value, baseline, status) and raw_counters
         """
-        log = _log()
-        args = {"cell_id": cell_id, "oss_id": oss_id, "year": year, "month": month, "day": day}
-        if log:
-            log.tool_called("query_lte_kpi", args)
-        t0 = time.monotonic()
-
-        con = duckdb.connect()
-        try:
-            result = con.execute(
-                """
-                SELECT * FROM read_csv_auto(?)
-                WHERE EUTRANCELLFDD = ?
-                  AND OSS_ID = ?
-                  AND YEAR_ID = ? AND MONTH_ID = ? AND DAY_ID = ?
-                """,
-                [csv_path, cell_id, oss_id, year, month, day],
-            )
-            row = result.fetchone()
-
-            if row is None:
-                out = {"error": f"No LTE data found for cell {cell_id} on {year}-{month:02d}-{day:02d}"}
-                if log:
-                    log.tool_returned("query_lte_kpi", out, int((time.monotonic() - t0) * 1000))
-                return out
-
-            cols = [desc[0] for desc in con.description]
-            counters = dict(zip(cols, row))
-
-            prior_result = con.execute(
-                """
-                SELECT * FROM read_csv_auto(?)
-                WHERE EUTRANCELLFDD = ?
-                  AND OSS_ID = ?
-                  AND (YEAR_ID < ? OR (YEAR_ID = ? AND MONTH_ID < ?)
-                       OR (YEAR_ID = ? AND MONTH_ID = ? AND DAY_ID < ?))
-                """,
-                [csv_path, cell_id, oss_id,
-                 year, year, month,
-                 year, month, day],
-            )
-            prior_rows = prior_result.fetchall()
-
-            calc = KPICalculator()
-            out = calc.evaluate_lte(counters, prior_rows, cols)
-        finally:
-            con.close()
-
-        if log:
-            log.tool_returned("query_lte_kpi", out, int((time.monotonic() - t0) * 1000))
-        return out
+        return execute_query_lte_kpi(cell_id, oss_id, year, month, day)
 
     yield FunctionInfo.from_fn(
         _query_lte_kpi,
@@ -113,3 +119,4 @@ async def query_lte_kpi(tool_config: QueryLteKpiConfig, builder: Builder):
             "Args: cell_id (str), oss_id (str), year (int), month (int), day (int)."
         ),
     )
+

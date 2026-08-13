@@ -31,10 +31,65 @@ class QueryNrEndcConfig(FunctionBaseConfig, name="query_nr_endc"):
     pass
 
 
+def execute_query_nr_endc(nr_cell_id: str, oss_id: str, year: int, month: int, day: int) -> dict[str, Any]:
+    """
+    Synchronous execution function to query NR EN-DC PM counters and compute EN-DC Setup Success Rate.
+    """
+    csv_path = os.getenv("NR_ENDC_CSV", "sample_data/nr_endc_sample.csv")
+    log = _log()
+    args = {"nr_cell_id": nr_cell_id, "oss_id": oss_id, "year": year, "month": month, "day": day}
+    if log:
+        log.tool_called("query_nr_endc", args)
+    t0 = time.monotonic()
+
+    con = duckdb.connect()
+    try:
+        result = con.execute(
+            """
+            SELECT * FROM read_csv_auto(?)
+            WHERE NRCellCU = ?
+              AND OSS_ID = ?
+              AND YEAR_ID = ? AND MONTH_ID = ? AND DAY_ID = ?
+            """,
+            [csv_path, nr_cell_id, oss_id, year, month, day],
+        )
+        row = result.fetchone()
+
+        if row is None:
+            out = {"error": f"No NR data found for cell {nr_cell_id} on {year}-{month:02d}-{day:02d}"}
+            if log:
+                log.tool_returned("query_nr_endc", out, int((time.monotonic() - t0) * 1000))
+            return out
+
+        cols = [desc[0] for desc in con.description]
+        counters = dict(zip(cols, row))
+
+        prior_result = con.execute(
+            """
+            SELECT * FROM read_csv_auto(?)
+            WHERE NRCellCU = ?
+              AND OSS_ID = ?
+              AND (YEAR_ID < ? OR (YEAR_ID = ? AND MONTH_ID < ?)
+                   OR (YEAR_ID = ? AND MONTH_ID = ? AND DAY_ID < ?))
+            """,
+            [csv_path, nr_cell_id, oss_id,
+             year, year, month,
+             year, month, day],
+        )
+        prior_rows = prior_result.fetchall()
+
+        calc = KPICalculator()
+        out = calc.evaluate_nr_endc(counters, prior_rows, cols)
+    finally:
+        con.close()
+
+    if log:
+        log.tool_returned("query_nr_endc", out, int((time.monotonic() - t0) * 1000))
+    return out
+
+
 @register_function(config_type=QueryNrEndcConfig, framework_wrappers=[LLMFrameworkEnum.LANGCHAIN])
 async def query_nr_endc(tool_config: QueryNrEndcConfig, builder: Builder):
-    csv_path = os.getenv("NR_ENDC_CSV", "sample_data/nr_endc_sample.csv")
-
     async def _query_nr_endc(nr_cell_id: str, oss_id: str, year: int, month: int, day: int) -> dict[str, Any]:
         """
         Query NR EN-DC counters and compute EN-DC Setup Success Rate.
@@ -50,56 +105,7 @@ async def query_nr_endc(tool_config: QueryNrEndcConfig, builder: Builder):
         Returns:
             dict with kpis_evaluated (EN-DC Setup Success Rate) and raw_counters
         """
-        log = _log()
-        args = {"nr_cell_id": nr_cell_id, "oss_id": oss_id, "year": year, "month": month, "day": day}
-        if log:
-            log.tool_called("query_nr_endc", args)
-        t0 = time.monotonic()
-
-        con = duckdb.connect()
-        try:
-            result = con.execute(
-                """
-                SELECT * FROM read_csv_auto(?)
-                WHERE NRCellCU = ?
-                  AND OSS_ID = ?
-                  AND YEAR_ID = ? AND MONTH_ID = ? AND DAY_ID = ?
-                """,
-                [csv_path, nr_cell_id, oss_id, year, month, day],
-            )
-            row = result.fetchone()
-
-            if row is None:
-                out = {"error": f"No NR data found for cell {nr_cell_id} on {year}-{month:02d}-{day:02d}"}
-                if log:
-                    log.tool_returned("query_nr_endc", out, int((time.monotonic() - t0) * 1000))
-                return out
-
-            cols = [desc[0] for desc in con.description]
-            counters = dict(zip(cols, row))
-
-            prior_result = con.execute(
-                """
-                SELECT * FROM read_csv_auto(?)
-                WHERE NRCellCU = ?
-                  AND OSS_ID = ?
-                  AND (YEAR_ID < ? OR (YEAR_ID = ? AND MONTH_ID < ?)
-                       OR (YEAR_ID = ? AND MONTH_ID = ? AND DAY_ID < ?))
-                """,
-                [csv_path, nr_cell_id, oss_id,
-                 year, year, month,
-                 year, month, day],
-            )
-            prior_rows = prior_result.fetchall()
-
-            calc = KPICalculator()
-            out = calc.evaluate_nr_endc(counters, prior_rows, cols)
-        finally:
-            con.close()
-
-        if log:
-            log.tool_returned("query_nr_endc", out, int((time.monotonic() - t0) * 1000))
-        return out
+        return execute_query_nr_endc(nr_cell_id, oss_id, year, month, day)
 
     yield FunctionInfo.from_fn(
         _query_nr_endc,
@@ -109,3 +115,4 @@ async def query_nr_endc(tool_config: QueryNrEndcConfig, builder: Builder):
             "Args: nr_cell_id (str), oss_id (str), year (int), month (int), day (int)."
         ),
     )
+

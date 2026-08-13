@@ -1,2 +1,0 @@
-this is the nvidia api key use this to make the calls to the nemo llm NVIDIA_API_KEY=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, yes i know i shouldnt paste this shit here, but please put that in the .env file okay and then use it, also 
-

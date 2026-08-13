@@ -234,13 +234,19 @@ eval/results/
 
 # NAT temporary workflow configs created at runtime
 tmp_*.yml
+tmp*.yml
 *.tmp.yml
+
+# Scratch text files & keys
+prompts.txt
+input.txt
 
 # macOS metadata
 .DS_Store
 
-# Kiro IDE settings (keep specs, exclude IDE-only state)
-.kiro/settings/
+# Kiro IDE state
+.kiro/
+.kiro*
 
 # Hypothesis test database
 .hypothesis/
@@ -251,3 +257,4 @@ tmp_*.yml
 # DuckDB temp files
 *.duckdb
 *.duckdb.wal
+

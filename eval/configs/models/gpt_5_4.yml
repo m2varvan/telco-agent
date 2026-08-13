@@ -1,0 +1,8 @@
+model_id: gpt_5_4
+category: frontier
+display_name: "Foundry GPT-5.4 Frontier Model"
+llm_name: gpt_5_4
+temperature: 0.0
+max_tokens: 4096
+max_agent_steps: 12
+notes: "Foundry hosted GPT-5.4 frontier model via Azure OpenAI v1 endpoint"

@@ -82,16 +82,16 @@ llms:
     max_tokens: 4096
     temperature: 0.0
 
-  # Azure OpenAI — company-hosted frontier model (GPT-4o, o1, etc.)
-  # Uses NAT's native azure_openai provider; fill AZURE_* vars in .env
-  azure_frontier:
-    _type: azure_openai
-    azure_endpoint: ${AZURE_OPENAI_ENDPOINT}
-    azure_deployment: ${AZURE_OPENAI_DEPLOYMENT}
-    api_key: ${AZURE_OPENAI_API_KEY}
-    api_version: "2025-04-01-preview"
+  # Foundry GPT-5.4 Frontier Model
+  gpt_5_4:
+    _type: openai
+    model_name: ${FRONTIER_MODEL_NAME}
+    api_key: ${FRONTIER_API_KEY}
+    base_url: ${FRONTIER_BASE_URL}
     max_tokens: 4096
     temperature: 0.0
+
+
 
 workflow:
   _type: tool_calling_agent

@@ -9,7 +9,7 @@ import pytest
 from hypothesis import given, assume, settings, HealthCheck
 from hypothesis import strategies as st
 
-from triage.kpi_calculator import (
+from agent_tools.kpi_calculator import (
     KPICalculator,
     assign_confidence,
     ACCESSIBILITY_ABSOLUTE_THRESHOLD,
@@ -356,7 +356,7 @@ def test_property_8_none_value_always_unavailable(kpi_name):
 @settings(max_examples=6, deadline=None)
 def test_property_9_lte_kpi_result_fields(cell_info):
     """Property 9: Every kpis_evaluated entry has the 4 required fields with correct types."""
-    from triage.tools.query_lte_kpi import query_lte_kpi
+    from agent_tools.tools.query_lte_kpi import execute_query_lte_kpi as query_lte_kpi
     cell_id, oss_id, year, month, day = cell_info
     result = query_lte_kpi(cell_id, oss_id, year, month, day)
     assert "error" not in result
@@ -378,7 +378,7 @@ def test_property_9_lte_kpi_result_fields(cell_info):
 @settings(max_examples=2, deadline=None)
 def test_property_9_nr_endc_result_fields(cell_info):
     """Property 9: NR EN-DC kpis_evaluated entry has the 4 required fields."""
-    from triage.tools.query_nr_endc import query_nr_endc
+    from agent_tools.tools.query_nr_endc import execute_query_nr_endc as query_nr_endc
     nr_cell_id, oss_id, year, month, day = cell_info
     result = query_nr_endc(nr_cell_id, oss_id, year, month, day)
     assert "error" not in result

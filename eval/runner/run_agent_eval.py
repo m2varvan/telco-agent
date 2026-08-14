@@ -265,7 +265,7 @@ async def run_eval(model: str, cases_path: str, reps: int, eval_mode: str) -> No
                 print(f"  [{done+1}/{total}] {case_id} rep={rep} ... ", end="", flush=True)
                 try:
                     row = await run_one_case(case, model, rep, eval_mode)
-                    status = "✓" if row["rca_correct"] else "✗"
+                    status = "✓" if row["rca_correct"] else ("~" if row.get("in_acceptable") else "✗")
                     print(
                         f"{status}  rc={row['predicted_root_cause_code']}"
                         f"  ev_f1={row['evidence_f1']:.2f}"

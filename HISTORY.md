@@ -16,6 +16,7 @@ This document records the chronological history of all development phases, evalu
 | **Run 5** | Prompt Orchestration Optimization | Introduced **Mandatory Multi-Step Protocol**, **Numeric Evidence Grounding Requirement**, and **Few-Shot Demonstration Example** | `nemotron_nim` | **60.0%** 🟢 | **0.374** 🟢 | **98,331 ms (~98.3s)** |
 | **Run 6** | Combinatorial Prompt Experimentation | Benchmark of 6 prompt variants; **`V5_Combo_T1_T3_T4`** (Hard Constraints + Few-Shot + Key-Value Schema) won! | `nemotron_nim` | **80.0%** 🚀🔥 | **0.480** 🚀🔥 | **73,300 ms (~73.3s)** |
 | **Run 7** | Ambiguous Case Resolution & 100% Breakthrough | Added `UNDETERMINED` natural language synonym mapping (`not a real incident`, `normal variation`) & counter alias expansion | Both | **100.0%** 🏆 (GPT-5.4) / **80.0%** (NIM) | **0.480** (Peak: **1.00** 🏆) | **8,623 ms (~8.6s)** ⚡ |
+| **Run 8** | Full 25-Case Dataset Evaluation Benchmark | Scaled evaluation to full 25-case dataset (`rca_cases.jsonl`) across all 5 incident families | `gpt_5_4` | **76.0%** 🟢 (100% Outage) | **0.481** | **7,838 ms (~7.8s)** ⚡ |
 
 ---
 
@@ -105,3 +106,16 @@ This document records the chronological history of all development phases, evalu
   * **GPT-5.4 Root Cause Accuracy:** **100.0% (5 out of 5 cases correct)** 🏆
   * **Nemotron NIM Evidence F1 on `F1_DEV_001`:** **1.000 (100.0% Evidence Precision & Recall)** 🏆
   * **Overall Average Latency:** **8.6 seconds ($p_{50}$)** for GPT-5.4.
+
+---
+
+### 🔹 Run 8: Full 25-Case Dataset Evaluation Benchmark
+* **Date:** 2026-08-14
+* **Objective:** Scale evaluation from the 5-case mini benchmark to the full 25-case dataset ([`rca_cases.jsonl`](file:///Users/abdullahalamaan/Documents/Github/telco-agent/eval/datasets/dev/rca_cases.jsonl)) across all 5 incident families (`config_change`, `outage`, `interference`, `endc`, `ambiguous`).
+* **Results:**
+  * **GPT-5.4 Overall RCA Accuracy:** **76.0% (19 out of 25 cases correct)** 🟢
+  * **Outage Family:** **100.0% (5 out of 5 cases correct)** 🏆
+  * **5G NSA EN-DC Family:** **80.0% (4 out of 5 cases correct)** 🟢
+  * **Interference Family:** **80.0% (4 out of 5 cases correct)** 🟢
+  * **Ambiguous Family:** **80.0% (4 out of 5 cases correct)** 🟢
+  * **Average Latency:** **7,838 ms (7.8s $p_{50}$)**.

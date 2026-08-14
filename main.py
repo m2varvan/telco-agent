@@ -44,9 +44,9 @@ import agent_tools.tools  # noqa: F401
 load_dotenv()
 
 # ── Timeouts ──────────────────────────────────────────────────────────────────
-# Nemotron-Super-49B takes ~30s per tool call + ~40s synthesis = ~130s for 3 tool calls
-TOOL_CALL_TIMEOUT      = 180   # seconds for tool_calling_agent (generous for multi-tool runs)
-REACT_FALLBACK_TIMEOUT = 150   # seconds for react_agent fallback
+# Nemotron-Super-49B deep reasoning models can take up to 300s for complex multi-tool runs
+TOOL_CALL_TIMEOUT      = 600   # seconds for tool_calling_agent
+REACT_FALLBACK_TIMEOUT = 600   # seconds for react_agent fallback
 
 # ── Required env vars ─────────────────────────────────────────────────────────
 _REQUIRED_NIM      = ["LLM_MODEL_NAME", "LLM_API_KEY", "LLM_BASE_URL"]

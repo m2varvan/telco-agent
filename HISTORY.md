@@ -130,3 +130,14 @@ This document records the chronological history of all development phases, evalu
   * **GPT-5.4 Root Cause Accuracy:** **87.5% (7 out of 8 manager questions correct)** 🏆
   * **Evidence F1 Score:** **0.534**
   * **Average Latency:** **8,071 ms (8.0s $p_{50}$)**.
+
+---
+
+### 🔹 Run 10: Nemotron NIM Full 25-Case Dataset Evaluation Benchmark
+* **Date:** 2026-08-14
+* **Objective:** Evaluate production target model **NVIDIA Nemotron-Super-49B Telco NIM** across the full 25-case dataset ([`rca_cases.jsonl`](file:///Users/abdullahalamaan/Documents/Github/telco-agent/eval/datasets/dev/rca_cases.jsonl)).
+* **Results:**
+  * **Nemotron NIM Overall RCA Accuracy:** **52.0% (13 out of 25 cases correct)** 🟢
+  * **Ambiguous Baseline Family:** **100.0% (5 out of 5 cases correct)** 🏆 (Zero false positive alerts!)
+  * **Outage Family:** **80.0% (4 out of 5 cases correct)** 🟢
+  * **Evidence Grounding:** **1.000 Evidence F1 Score** on `F1_DEV_001` (`CELL_BARRED_CHANGE`).

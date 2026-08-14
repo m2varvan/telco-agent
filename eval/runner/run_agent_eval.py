@@ -30,6 +30,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
+os.environ["LANGCHAIN_OPENAI_STREAM_CHUNK_TIMEOUT_S"] = "600"
 
 # ── Add project root to path so imports work regardless of CWD ───────────────
 _ROOT = Path(__file__).resolve().parents[2]

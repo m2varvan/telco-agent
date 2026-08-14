@@ -17,6 +17,7 @@ This document records the chronological history of all development phases, evalu
 | **Run 6** | Combinatorial Prompt Experimentation | Benchmark of 6 prompt variants; **`V5_Combo_T1_T3_T4`** (Hard Constraints + Few-Shot + Key-Value Schema) won! | `nemotron_nim` | **80.0%** 🚀🔥 | **0.480** 🚀🔥 | **73,300 ms (~73.3s)** |
 | **Run 7** | Ambiguous Case Resolution & 100% Breakthrough | Added `UNDETERMINED` natural language synonym mapping (`not a real incident`, `normal variation`) & counter alias expansion | Both | **100.0%** 🏆 (GPT-5.4) / **80.0%** (NIM) | **0.480** (Peak: **1.00** 🏆) | **8,623 ms (~8.6s)** ⚡ |
 | **Run 8** | Full 25-Case Dataset Evaluation Benchmark | Scaled evaluation to full 25-case dataset (`rca_cases.jsonl`) across all 5 incident families | `gpt_5_4` | **76.0%** 🟢 (100% Outage) | **0.481** | **7,838 ms (~7.8s)** ⚡ |
+| **Run 9** | Manager Conversational Query Benchmark | Evaluated 8 realistic natural language manager/NOC query variations (`manager_queries.jsonl`) | `gpt_5_4` | **87.5%** 🏆 | **0.534** | **8,071 ms (~8.0s)** ⚡ |
 
 ---
 
@@ -119,3 +120,13 @@ This document records the chronological history of all development phases, evalu
   * **Interference Family:** **80.0% (4 out of 5 cases correct)** 🟢
   * **Ambiguous Family:** **80.0% (4 out of 5 cases correct)** 🟢
   * **Average Latency:** **7,838 ms (7.8s $p_{50}$)**.
+
+---
+
+### 🔹 Run 9: Manager Conversational Query Benchmark
+* **Date:** 2026-08-14
+* **Objective:** Audit evaluation coverage for conversational manager questions and add a dedicated dataset ([`manager_queries.jsonl`](file:///Users/abdullahalamaan/Documents/Github/telco-agent/eval/datasets/dev/manager_queries.jsonl)) testing informal phrasing, NOC dashboard terminology, and binary manager questions.
+* **Results:**
+  * **GPT-5.4 Root Cause Accuracy:** **87.5% (7 out of 8 manager questions correct)** 🏆
+  * **Evidence F1 Score:** **0.534**
+  * **Average Latency:** **8,071 ms (8.0s $p_{50}$)**.

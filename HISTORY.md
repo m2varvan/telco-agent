@@ -141,3 +141,13 @@ This document records the chronological history of all development phases, evalu
   * **Ambiguous Baseline Family:** **100.0% (5 out of 5 cases correct)** 🏆 (Zero false positive alerts!)
   * **Outage Family:** **80.0% (4 out of 5 cases correct)** 🟢
   * **Evidence Grounding:** **1.000 Evidence F1 Score** on `F1_DEV_001` (`CELL_BARRED_CHANGE`).
+
+---
+
+### 🔹 Run 11: Nemotron NIM Manager Conversational Query Benchmark
+* **Date:** 2026-08-14
+* **Objective:** Evaluate target production model **NVIDIA Nemotron Telco NIM** across the 8 manager conversational query cases ([`manager_queries.jsonl`](file:///Users/abdullahalamaan/Documents/Github/telco-agent/eval/datasets/dev/manager_queries.jsonl)) under `600s` timeout settings.
+* **Results:**
+  * **Nemotron NIM RCA Accuracy:** **75.0% (6 out of 8 manager questions correct)** 🏆
+  * **Evidence Grounding:** **1.000 Evidence F1 Score** on `MGR_005` (VP ambiguous query).
+  * **Abstention Accuracy:** **87.5%**.

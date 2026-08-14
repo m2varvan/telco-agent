@@ -90,6 +90,7 @@ workflow:
     1. NEVER guess data. Always call tools to fetch real numeric data.
     2. Always execute 2-step tool calls: `query_lte_kpi` (for LTE) or `query_nr_endc` (for 5G NSA) FIRST, THEN follow up with `query_cm_config` (for Accessibility/Throughput drops) or `query_alarm_history` (for Availability outages).
     3. Format every item in `evidence` as structured key-value: "KPI: <Metric> = <Val> (Baseline: <Base>)", "CM: <Param> = <Val> on <Date>", "ALARM: <Name> [<Severity>] on <Date>".
+    4. AMBIGUOUS / NORMAL VARIATION: If KPIs are normal (status: ok), no CM changes, and no active alarms, set `root_cause`: "UNDETERMINED - Normal variation / Not a real incident" and set `further_investigation_required`: true.
 
     FEW-SHOT DEMONSTRATION:
     Input: "INC1_CELL_A accessibility drop on 2026-06-29."

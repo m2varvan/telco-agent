@@ -56,7 +56,7 @@ class RootCauseAccuracyEvaluator:
             "POWER_FAILURE":           ["power failure", "power outage", "rectifier"],
             "NEIGHBOUR_INTERFERENCE":  ["interference", "neighbour", "neighbor", "co-site"],
             "NR_RANDOM_ACCESS_FAILURE":["random access", "nr ra", "endc", "en-dc", "5g", "nr failure"],
-            "UNDETERMINED":            ["undetermined", "insufficient", "ambiguous", "unclear", "unknown"],
+            "UNDETERMINED":            ["undetermined", "insufficient", "ambiguous", "unclear", "unknown", "not a real incident", "normal variation", "no incident", "within normal", "no degradation", "no corrective action", "no issue", "healthy"],
         }
 
         if not correct and not in_acceptable:

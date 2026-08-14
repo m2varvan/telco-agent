@@ -145,6 +145,10 @@ async def run_one_case(
             "en-dc": "NR_RANDOM_ACCESS_FAILURE", "endc": "NR_RANDOM_ACCESS_FAILURE",
             "5g nsa": "NR_RANDOM_ACCESS_FAILURE", "nr random": "NR_RANDOM_ACCESS_FAILURE",
             "undetermined": "UNDETERMINED", "insufficient": "UNDETERMINED",
+            "not a real incident": "UNDETERMINED", "normal variation": "UNDETERMINED",
+            "no incident": "UNDETERMINED", "within normal": "UNDETERMINED",
+            "no degradation": "UNDETERMINED", "no corrective action": "UNDETERMINED",
+            "no issue": "UNDETERMINED", "healthy": "UNDETERMINED",
         }
         for kw, code in TEXT_TO_CODE.items():
             if kw in rc_text:

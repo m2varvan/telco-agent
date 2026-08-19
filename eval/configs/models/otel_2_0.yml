@@ -1,0 +1,8 @@
+model_id: otel_2_0
+category: open_source
+display_name: "OpenTel 2.0 LLM 31B IT"
+llm_name: otel_2_0
+temperature: 0.0
+max_tokens: 4096
+max_agent_steps: 15
+notes: "OpenTel 2.0 through an OpenAI-compatible endpoint"

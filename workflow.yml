@@ -78,6 +78,20 @@ llms:
     max_tokens: 4096
     model_name: ${LLM_MODEL_NAME}
     temperature: 0.0
+  opus_4_7:
+    _type: litellm
+    api_key: ${FRONTIER_API_KEY_2}
+    base_url: ${FRONTIER_BASE_URL_2}
+    max_tokens: 4096
+    model_name: anthropic/${FRONTIER_MODEL_NAME_2}
+    temperature: 1.0
+  otel_2_0:
+    _type: openai
+    api_key: ${LLM_API_KEY_2}
+    base_url: ${LLM_BASE_URL_2}
+    max_tokens: 4096
+    model_name: ${LLM_MODEL_NAME_2}
+    temperature: 0.0
 workflow:
   _type: tool_calling_agent
   handle_tool_errors: true

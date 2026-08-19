@@ -1,0 +1,8 @@
+model_id: opus_4_7
+category: frontier
+display_name: "Claude Opus 4.7 via Azure AI Foundry"
+llm_name: opus_4_7
+temperature: 1.0
+max_tokens: 4096
+max_agent_steps: 15
+notes: "Claude Opus through the Azure AI Foundry Anthropic endpoint using NAT LiteLLM"

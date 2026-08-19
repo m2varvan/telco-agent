@@ -51,7 +51,8 @@ REACT_FALLBACK_TIMEOUT = 600   # seconds for react_agent fallback
 # ── Required env vars ─────────────────────────────────────────────────────────
 _REQUIRED_NIM      = ["LLM_MODEL_NAME", "LLM_API_KEY", "LLM_BASE_URL"]
 _REQUIRED_FRONTIER = ["FRONTIER_MODEL_NAME", "FRONTIER_API_KEY", "FRONTIER_BASE_URL"]
-
+_REQUIRED_OPUS     = ["FRONTIER_MODEL_NAME_2", "FRONTIER_API_KEY_2", "FRONTIER_BASE_URL_2"]
+_REQUIRED_OTEL     = ["LLM_MODEL_NAME_2", "LLM_API_KEY_2", "LLM_BASE_URL_2"]
 
 # ── react_agent system prompt (needs {tools} and {tool_names} placeholders) ───
 _REACT_SYSTEM_PROMPT = """\
@@ -249,16 +250,61 @@ LOG = TriageLogger()
 # ── Env validation ─────────────────────────────────────────────────────────────
 def _validate_env(override: str | None = None) -> str:
     active = (override or os.getenv("ACTIVE_LLM", "nemotron_nim")).strip()
+
     if active in ("gpt_5_4", "frontier", "azure_frontier"):
-        missing = [v for v in _REQUIRED_FRONTIER if not os.getenv(v) or "your-" in os.getenv(v, "")]
+        missing = [
+            variable
+            for variable in _REQUIRED_FRONTIER
+            if not os.getenv(variable)
+            or "your-" in os.getenv(variable, "")
+        ]
         if missing:
-            raise EnvironmentError(f"Frontier model vars not configured: {', '.join(missing)}. Set FRONTIER_* in .env.")
+            raise EnvironmentError(
+                f"Frontier model vars not configured: {', '.join(missing)}. "
+                "Set FRONTIER_* in .env."
+            )
         return "gpt_5_4"
-    else:
-        missing = [v for v in _REQUIRED_NIM if not os.getenv(v)]
+
+    if active in ("opus_4_7", "opus"):
+        missing = [
+            variable
+            for variable in _REQUIRED_OPUS
+            if not os.getenv(variable)
+            or "your-" in os.getenv(variable, "")
+        ]
         if missing:
-            raise EnvironmentError(f"NVIDIA NIM vars missing: {', '.join(missing)}. Set LLM_* in .env.")
-        return "nemotron_nim"
+            raise EnvironmentError(
+                f"Opus model vars not configured: {', '.join(missing)}. "
+                "Set FRONTIER_*_2 in .env."
+            )
+        return "opus_4_7"
+
+    if active in ("otel_2_0", "otel"):
+        missing = [
+            variable
+            for variable in _REQUIRED_OTEL
+            if not os.getenv(variable)
+            or "your-" in os.getenv(variable, "")
+        ]
+        if missing:
+            raise EnvironmentError(
+                f"OpenTel model vars not configured: {', '.join(missing)}. "
+                "Set LLM_*_2 in .env."
+            )
+        return "otel_2_0"
+
+    missing = [
+        variable
+        for variable in _REQUIRED_NIM
+        if not os.getenv(variable)
+    ]
+    if missing:
+        raise EnvironmentError(
+            f"NVIDIA NIM vars missing: {', '.join(missing)}. "
+            "Set LLM_* in .env."
+        )
+
+    return "nemotron_nim"
 
 
 # ── JSON extraction ────────────────────────────────────────────────────────────
